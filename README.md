@@ -1,6 +1,17 @@
-# yfax-parent
+# SpringBoot实现的接口API系统实战
 
-一个接口服务系统，包括以下内容：
+集成了：
+拦截器
+日志处理
+mysql
+mybatis
+oauth2.0,
+spring secutity等功能
+
+已投入生产线上使用
+
+
+# 接口服务系统，包括以下内容：
 
 * 通用组件服务 yfax-common
 * 客户端api系统 yfax-htt-api
@@ -37,3 +48,12 @@
 
 ### yfax-utils
 提供常用工具类，如AES对称加密算法类，RSA非对称加密算法类，唯一主键生成类，订单号生成类，8位邀请码生成类，图形验证码生成类，md5加密类，网络http请求工具类等
+
+
+## [关于我](http://heminit.com/about/)
+
+欢迎交流问题，可加QQ469580884，一起探讨交流问题
+
+[我的博客地址](http://blog.csdn.net/hemin1003)
+
+[个人域名](http://heminit.com)
