@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.task.htt.vo.HttBlacklistHisVo">
+	
+    <!-- 添加 -->
+	<insert id="insertHttBlacklistHis" parameterType="com.yfax.task.htt.vo.HttBlacklistHisVo">
+		insert into htt_blacklist_his
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="phoneNum != null" > phoneNum, </if>
+		  <if test="source != null" > source, </if>
+		  <if test="strategy != null" > strategy, </if>
+		  <if test="accountStatus != null" > accountStatus, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="phoneNum != null" > #{phoneNum}, </if>
+		  <if test="source != null" > #{source}, </if>
+		  <if test="strategy != null" > #{strategy}, </if>
+		  <if test="accountStatus != null" > #{accountStatus}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > null, </if>
+		  
+        </trim>
+	</insert>
+	
+	<!-- 批量插入 -->
+	<insert id="batchInsertBlacklistHis" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open=""
+			close="" separator=";">
+			insert into htt_blacklist_his
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="item.id != null"> id, </if>
+				<if test="item.phoneNum != null"> phoneNum, </if>
+				<if test="item.source != null"> source, </if>
+				<if test="item.strategy != null"> strategy, </if>
+				<if test="item.accountStatus != null"> accountStatus, </if>
+				<if test="item.createDate != null"> createDate, </if>
+				<if test="item.updateDate != null"> updateDate, </if>
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides=",">
+				<if test="item.id != null"> #{item.id}, </if>
+				<if test="item.phoneNum != null"> #{item.phoneNum}, </if>
+				<if test="item.source != null"> #{item.source}, </if>
+				<if test="item.strategy != null"> #{item.strategy}, </if>
+				<if test="item.accountStatus != null"> #{item.accountStatus}, </if>
+				<if test="item.createDate != null"> #{item.createDate}, </if>
+				<if test="item.updateDate != null"> null, </if>
+			</trim>
+		</foreach>
+	</insert>
+    
+</mapper>

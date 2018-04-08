@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.task.htt.vo.HttDeleteTableData">
+
+	<delete id="deleteHttTraceHis" parameterType="java.util.Map">
+		<![CDATA[
+			delete from htt_trace_his where createDate < #{currentTime}
+		]]>
+	</delete>
+	
+	<insert id="insertHttReadHis" parameterType="java.util.Map">
+		<![CDATA[
+			insert into htt_read_his_child
+			select * from htt_read_his where createDate < #{currentTime}
+		]]>
+	</insert>
+	
+	<delete id="deleteHttReadHis" parameterType="java.util.Map">
+		<![CDATA[
+			delete from htt_read_his where createDate < #{currentTime}
+		]]>
+	</delete>
+	
+	<insert id="insertHttReadInfoHis" parameterType="java.util.Map">
+		<![CDATA[
+			insert into htt_readinfo_his_child
+			select * from htt_readinfo_his where createDate < #{currentTime}
+		]]>
+	</insert>
+	
+	<delete id="deleteHttReadInfoHis" parameterType="java.util.Map">
+		<![CDATA[
+			delete from htt_readinfo_his where createDate < #{currentTime}
+		]]>
+	</delete>
+	
+	<insert id="insertHttUserTask" parameterType="java.util.Map">
+		<![CDATA[
+			insert into htt_user_task_child
+			select * from htt_user_task where createDate < #{currentTime} and taskType=2
+		]]>
+	</insert>
+	
+	<delete id="deleteHttUserTask" parameterType="java.util.Map">
+		<![CDATA[
+			delete from htt_user_task where createDate < #{currentTime} and taskType=2
+		]]>
+	</delete>
+	
+	<insert id="insertHttVideoInfoHis" parameterType="java.util.Map">
+		<![CDATA[
+			insert into htt_videoinfo_his_child
+			select * from htt_videoinfo_his where createDate < #{currentTime}
+		]]>
+	</insert>
+	
+	<delete id="deleteHttVideoInfoHis" parameterType="java.util.Map">
+		<![CDATA[
+			delete from htt_videoinfo_his where createDate < #{currentTime}
+		]]>
+	</delete>
+	
+	<insert id="insertHttAwardHisOfTransfer" parameterType="java.util.Map">
+		<![CDATA[
+			insert into htt_award_his_child
+			select * from htt_award_his where createDate < #{currentTime}
+		]]>
+	</insert>
+	
+	<delete id="deleteHttAwardHisOfTransfer" parameterType="java.util.Map">
+		<![CDATA[
+			delete from htt_award_his where createDate < #{currentTime}
+		]]>
+	</delete>
+
+</mapper>

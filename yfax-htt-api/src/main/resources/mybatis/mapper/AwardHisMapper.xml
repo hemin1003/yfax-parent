@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.AwardHisVo">
+
+	<select id="selectAwardHisByPhoneNum" resultType="com.yfax.webapi.htt.vo.AwardHisVo">
+        select * from htt_award_his where phoneNum=#{phoneNum} order by createDate desc limit 200
+    </select>
+    
+    <select id="selectAwardHisCheckList" resultType="com.yfax.webapi.htt.vo.AwardHisVo">
+        select * from htt_award_his where phoneNum=#{phoneNum} and awardType=3 and isCal=0 
+        		order by createDate desc limit 7
+    </select>
+    
+    <!-- 今日签到判断-弃用 -->
+    <select id="selectAwardHisIsFirstLogin" resultType="com.yfax.webapi.htt.vo.AwardHisVo">
+         select * from htt_award_his where phoneNum=#{phoneNum} and awardType=3 
+         	and createDate>=#{currentTime} limit 1
+    </select>
+    
+    <!-- 统计各类型指定日期下领取的金币值 -->
+    <select id="selectUserTotalOfGold" resultType="java.lang.Long">
+		select ifnull(sum(gold),0) as total from htt_award_his where phoneNum=#{phoneNum} 
+			and awardType=#{awardType} and createDate>=#{currentTime}
+    </select>
+    
+    <!-- 统计各类型收益的总金额 -->
+    <select id="selectUserAwardTotal" resultType="java.lang.Long">
+		select ifnull(sum(gold),0) as total from htt_award_his where phoneNum=#{phoneNum} 
+			and awardType=#{awardType} and isCal=0
+    </select>
+    
+    <!-- 添加 -->
+	<insert id="insertAwardHis" parameterType="com.yfax.webapi.htt.vo.AwardHisVo">
+		insert into htt_award_his
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="phoneNum != null" > phoneNum, </if>
+		  <if test="awardType != null" > awardType, </if>
+		  <if test="awardName != null" > awardName, </if>
+		  <if test="gold != null" > gold, </if>
+		  <if test="isCal != null" > isCal, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  <if test="studentPhoneNum != null" > studentPhoneNum, </if>
+		  <if test="taskId != null" > taskId, </if>
+		  <if test="taskTitle != null" > taskTitle, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="phoneNum != null" > #{phoneNum}, </if>
+		  <if test="awardType != null" > #{awardType}, </if>
+		  <if test="awardName != null" > #{awardName}, </if>
+		  <if test="gold != null" > #{gold}, </if>
+		  <if test="isCal != null" > #{isCal}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > null, </if>
+		  <if test="studentPhoneNum != null" > #{studentPhoneNum}, </if>
+		  <if test="taskId != null" > #{taskId}, </if>
+		  <if test="taskTitle != null" > #{taskTitle}, </if>
+		  
+        </trim>
+	</insert>
+	
+	<update id="updateUserAwardTotalFlag" parameterType="com.yfax.webapi.htt.vo.AwardHisVo">
+		update htt_award_his set isCal=1 where phoneNum=#{phoneNum} and awardType=#{awardType} and isCal=0
+	</update>
+	
+	<!-- 新手任务-指定类型出现的次数 -->
+    <select id="selectCountByNewUserTask" resultType="java.lang.Long">
+		select count(*) as count from htt_award_his where phoneNum=#{phoneNum} 
+			and awardType=#{awardType}
+    </select>
+    
+    <!-- 日常任务-指定类型在指定日期出现的次数 -->
+    <select id="selectCountByDailyTask" resultType="java.lang.Long">
+		select count(*) as count from htt_award_his where phoneNum=#{phoneNum} 
+			and awardType=#{awardType} and createDate>=#{currentTime}
+    </select>
+    
+    <!-- 查询最近一次奖励记录 -->
+    <select id="selectLastestAwardInfo" resultType="com.yfax.webapi.htt.vo.AwardHisVo">
+		select * from htt_award_his where phoneNum=#{phoneNum}  
+			and awardType=#{awardType} and createDate>=#{currentTime} 
+			order by createDate desc limit 1
+    </select>
+    
+    <!-- 查询邀请成功的徒弟数据 -->
+    <select id="selectStudents" resultType="com.yfax.webapi.htt.vo.AwardHisVo">
+ 		select (case when b.realPhoneNum='' or b.realPhoneNum is null then a.phoneNum else b.realPhoneNum end) as phoneNum, a.gold,a.createDate 
+		from ( select studentPhoneNum as phoneNum, studentsGold as gold, (case when updateDate is null then createDate else updateDate end) as createDate
+ 		from htt_inviteuser_his where masterPhoneNum=#{phoneNum} order by createDate desc ) a inner join htt_app_user b where a.phoneNum=b.phoneNum
+    </select>
+    
+    <!-- 获取徒弟的收益明细数据 -->
+    <select id="selectStudentsDetail" resultType="com.yfax.webapi.htt.vo.AwardHisVo">
+		select (case when b.realPhoneNum='' or b.realPhoneNum is null then a.phoneNum else b.realPhoneNum end) as phoneNum, 
+		a.gold,a.createDate from (select studentPhoneNum as phoneNum,gold,createDate from htt_award_student_his where phoneNum=#{phoneNum} 
+		and studentPhoneNum in (select studentPhoneNum from htt_inviteuser_his where masterPhoneNum=#{phoneNum}) 
+		and awardType in (2,5) order by createDate desc) a inner join htt_app_user b where a.phoneNum=b.phoneNum
+    </select>
+    
+    <!-- 查当日时限任务完成的次数是否达到上限 -->
+    <select id="selectTimeTaskCountOfDay" resultType="java.lang.Long">
+		select count(id) as count from htt_award_his where phoneNum=#{phoneNum} and awardType=14 
+			and createDate>=#{currentTime} and taskId=#{taskId}
+    </select>
+    
+    <!-- 获得当日最新的时限任务奖励数据 -->
+    <select id="selectLastestTimeTaskOfDay" resultType="com.yfax.webapi.htt.vo.AwardHisVo">
+		select * from htt_award_his where phoneNum=#{phoneNum} and awardType=14 
+			and createDate>=#{currentTime} and taskId=#{taskId} order by createDate desc limit 1
+    </select>
+    
+    <!-- 寒假活动-查询累计活动时间内用户邀请有效徒弟个数 -->
+    <select id="holidayActivitySelectRealInviteUser" resultType="java.lang.String">
+       <![CDATA[
+        SELECT numbs as total from (
+	       	SELECT count(studentPhoneNum) numbs,phoneNum FROM (
+		        select distinct studentPhoneNum,phoneNum from (
+		    	    select studentPhoneNum, count(studentPhoneNum) nums, phoneNum from (
+			 	select studentPhoneNum, phoneNum from htt_award_student_his where phoneNum=#{phoneNum} and studentPhoneNum in (SELECT `studentPhoneNum` 
+				FROM `htt_inviteuser_his` where masterPhoneNum=#{phoneNum} and createDate>=#{startTime} and createDate <=#{endTime}) 
+		        and createDate>=#{startTime} and createDate <=#{endTime} and awardType=5) b group by studentPhoneNum
+			 	having nums>=5) a
+	        ) c 
+	     ) d
+       ]]>
+    </select>
+    
+    <!-- 寒假活动-查询用户当天已抽奖的次数 -->
+    <select id="holidayActivitySelectLuckyDrawCount" resultType="java.lang.String">
+       <![CDATA[
+       		select count(*) from htt_award_his where phoneNum=#{phoneNum} and awardType='18' 
+       			and createDate>=#{curTime}
+       ]]>
+    </select>
+    
+</mapper>

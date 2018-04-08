@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.AppShareCodeVo">
+
+	<select id="selectAppShareCodeByPhoneNum" resultType="com.yfax.webapi.htt.vo.AppShareCodeVo">
+        select * from htt_app_sharecode where phoneNum=#{phoneNum}
+    </select>
+    
+    <select id="selectAppShareCodeByShareCode" resultType="com.yfax.webapi.htt.vo.AppShareCodeVo">
+         select * from htt_app_sharecode where sharecode=#{sharecode}
+    </select>
+
+    <!-- 添加 -->
+	<insert id="insertAppShareCode" parameterType="com.yfax.webapi.htt.vo.AppShareCodeVo">
+		insert into htt_app_sharecode
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="phoneNum != null" > phoneNum, </if>
+		  <if test="shareCode != null" > shareCode, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="phoneNum != null" > #{phoneNum}, </if>
+		  <if test="shareCode != null" > #{shareCode}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > null, </if>
+		  
+        </trim>
+	</insert>
+</mapper>

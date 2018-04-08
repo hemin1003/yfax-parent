@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.AdvDetailVo">
+
+	 <select id="selectAdvDetail" resultType="com.yfax.webapi.htt.vo.AdvDetailVo">
+       	select * from (select a.*,b.advFlag,b.advName from htt_adv_detail a 
+		inner join htt_adv_list b on a.advFkid=b.id) c 
+		where status=2 and tagName=#{tagName} 
+       	and showRate>=#{showRate} order by orderNum desc
+    </select>
+    
+</mapper>

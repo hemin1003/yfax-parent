@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.task.htt.vo.HttSmsActiveUserVo">
+
+   <select id="selectInactiveRealPhoneNum" resultType="java.lang.String">
+        <![CDATA[
+		select realPhoneNum from htt_app_user where blackList = 0 and updateDate < #{sevenDayAgo} and realPhoneNum is not null
+		 ]]>
+	</select>
+ 
+</mapper>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.WithdrawHisVo">
+
+    <select id="selectWithdrawHis" resultType="com.yfax.webapi.htt.vo.WithdrawHisVo">
+		select * from htt_withdraw_his where phoneNum = #{phoneNum} order by withdrawTime desc limit 20
+    </select>
+    
+    <select id="selectCountByWithdrawHisType" resultType="java.lang.Long">
+		select count(*) as count from htt_withdraw_his where withdrawType=#{withdrawType} 
+			and income=#{income} and statusType!=4
+			and withdrawTime>#{currentTime} 			
+    </select>
+    
+    <!-- 指定日期提现次数 -->
+    <select id="selectWithdrawHisCountByPhoneNumAndTime" resultType="java.lang.Long">
+		select count(*) as count from htt_withdraw_his where phoneNum=#{phoneNum} 
+			and withdrawTime>#{currentTime}		
+    </select>
+    
+    <!-- 添加 -->
+	<insert id="insertWithdrawHis" parameterType="com.yfax.webapi.htt.vo.WithdrawHisVo">
+		insert into htt_withdraw_his
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="phoneNum != null" > phoneNum, </if>
+		  <if test="withdrawType != null" > withdrawType, </if>
+		  <if test="withdrawName != null" > withdrawName, </if>
+		  <if test="name != null" > name, </if>
+		  <if test="account != null" > account, </if>
+		  <if test="gold != null" > gold, </if>
+		  <if test="income != null" > income, </if>
+		  <if test="withdrawTime != null" > withdrawTime, </if>
+		  <if test="status != null" > status, </if>
+		  <if test="statusType != null" > statusType, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  <if test="ownPhoneNum != null" > ownPhoneNum, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="phoneNum != null" > #{phoneNum}, </if>
+		  <if test="withdrawType != null" > #{withdrawType}, </if>
+		  <if test="withdrawName != null" > #{withdrawName}, </if>
+		  <if test="name != null" > #{name}, </if>
+		  <if test="account != null" > #{account}, </if>
+		  <if test="gold != null" > #{gold}, </if>
+		  <if test="income != null" > #{income}, </if>
+		  <if test="withdrawTime != null" > #{withdrawTime}, </if>
+		  <if test="status != null" > #{status}, </if>
+		  <if test="statusType != null" > #{statusType}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > null, </if>
+		  <if test="ownPhoneNum != null" > #{ownPhoneNum}, </if>
+		  
+        </trim>
+	</insert>
+</mapper>

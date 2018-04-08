@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.UserTaskVo">
+
+	<select id="selectUserTask" resultType="com.yfax.webapi.htt.vo.UserTaskVo">
+		select * from htt_user_task where phoneNum=#{phoneNum} and taskId=#{taskId} 
+			order by createDate desc limit 1
+	</select>
+	
+	<select id="selectNewUserTask" resultType="com.yfax.webapi.htt.vo.UserTaskVo">
+		select * from htt_user_task where phoneNum=#{phoneNum} and taskType=1
+			and taskId=#{taskId} order by createDate desc limit 1
+	</select>
+	
+	<select id="selectDailyUserTask" resultType="com.yfax.webapi.htt.vo.UserTaskVo">
+		select * from htt_user_task where phoneNum=#{phoneNum} and taskType=2
+			and taskId=#{taskId} and createDate>#{currentTime} 
+			order by createDate desc limit 1
+	</select>
+
+    <!-- 添加 -->
+	<insert id="insertUserTask" parameterType="com.yfax.webapi.htt.vo.UserTaskVo">
+		insert into htt_user_task
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="phoneNum != null" > phoneNum, </if>
+		  <if test="taskType != null" > taskType, </if>
+		  <if test="taskId != null" > taskId, </if>
+		  <if test="taskTitle != null" > taskTitle, </if>
+		  <if test="taskGold != null" > taskGold, </if>
+		  <if test="taskDesc != null" > taskDesc, </if>
+		  <if test="taskTime != null" > taskTime, </if>
+		  <if test="status != null" > status, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  <if test="paramDailyCount != null" > paramDailyCount, </if>
+		  <if test="paramInterval != null" > paramInterval, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="phoneNum != null" > #{phoneNum}, </if>
+		  <if test="taskType != null" > #{taskType}, </if>
+		  <if test="taskId != null" > #{taskId}, </if>
+		  <if test="taskTitle != null" > #{taskTitle}, </if>
+		  <if test="taskGold != null" > #{taskGold}, </if>
+		  <if test="taskDesc != null" > #{taskDesc}, </if>
+		  <if test="taskTime != null" > #{taskTime}, </if>
+		  <if test="status != null" > #{status}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > null, </if>
+		  <if test="paramDailyCount != null" > #{paramDailyCount}, </if>
+		  <if test="paramInterval != null" > #{paramInterval}, </if>
+		  
+        </trim>
+	</insert>
+	
+	<update id="updateUserTask" parameterType="com.yfax.webapi.htt.vo.UserTaskVo">
+		update htt_user_task 
+		<set>
+			<if test="id != null"> version=version+1, </if>
+			<if test="taskTitle != null"> taskTitle = #{taskTitle}, </if>
+			<if test="taskGold != null"> taskGold = #{taskGold}, </if>
+			<if test="taskDesc != null"> taskDesc = #{taskDesc}, </if>
+			<if test="taskTime != null"> taskTime = #{taskTime}, </if>
+			<if test="status != null"> status = #{status}, </if>
+			<if test="isDeleted != null"> isDeleted = #{isDeleted}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+			<if test="paramDailyCount != null"> paramDailyCount = #{paramDailyCount}, </if>
+			<if test="paramInterval != null"> paramInterval = #{paramInterval}, </if>
+		</set>
+		where id = #{id} and version=#{version}
+	</update>
+	
+</mapper>

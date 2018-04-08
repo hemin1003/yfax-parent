@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <package name="com.yfax.webapi"/>
+    </typeAliases>
+    <mappers>
+        <mapper resource="mybatis/mapper/SpiderListMapper.xml"/>
+        <mapper resource="mybatis/mapper/SpiderEmailMapper.xml"/>
+        <mapper resource="mybatis/mapper/SpiderSmsMapper.xml"/>
+        <mapper resource="mybatis/mapper/SpiderConfigMapper.xml"/>
+    </mappers>
+</configuration>

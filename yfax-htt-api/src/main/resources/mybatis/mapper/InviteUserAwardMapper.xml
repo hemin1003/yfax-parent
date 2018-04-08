@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.InviteUserAwardVo">
+
+	<select id="selectIsExistInviteUserAward" resultType="com.yfax.webapi.htt.vo.InviteUserAwardVo">
+		select * from htt_inviteuser_award where studentPhoneNum=#{studentPhoneNum} and updateDate >=#{updateDate} limit 1
+    </select>
+
+	<select id="selectInviteUserAward" resultType="com.yfax.webapi.htt.vo.InviteUserAwardVo">
+		select * from htt_inviteuser_award where studentPhoneNum=#{studentPhoneNum} and isAward=0 order by time 
+    </select>
+
+    <!-- 添加 -->
+	<insert id="insertInviteUserAward" parameterType="com.yfax.webapi.htt.vo.InviteUserAwardVo">
+		insert into htt_inviteuser_award
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="masterPhoneNum != null" > masterPhoneNum, </if>
+		  <if test="studentPhoneNum != null" > studentPhoneNum, </if>
+		  <if test="time != null" > time, </if>
+		  <if test="descStr != null" > descStr, </if>
+		  <if test="gold != null" > gold, </if>
+		  <if test="isAward != null" > isAward, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="masterPhoneNum != null" > #{masterPhoneNum}, </if>
+		  <if test="studentPhoneNum != null" > #{studentPhoneNum}, </if>
+		  <if test="time != null" > #{time}, </if>
+		  <if test="descStr != null" > #{descStr}, </if>
+		  <if test="gold != null" > #{gold}, </if>
+		  <if test="isAward != null" > #{isAward}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > null, </if>
+		  
+        </trim>
+	</insert>
+	
+	<update id="updateInviteUserAward" parameterType="com.yfax.webapi.htt.vo.InviteUserAwardVo">
+		update htt_inviteuser_award 
+		<set>
+			<if test="masterPhoneNum != null"> masterPhoneNum = #{masterPhoneNum}, </if>
+			<if test="studentPhoneNum != null"> studentPhoneNum = #{studentPhoneNum}, </if>
+			<if test="time != null"> time = #{time}, </if>
+			<if test="descStr != null"> descStr = #{descStr}, </if>
+			<if test="gold != null"> gold = #{gold}, </if>
+			<if test="isAward != null"> isAward = #{isAward}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+			
+		</set>
+		where id = #{id} 
+	</update>
+</mapper>

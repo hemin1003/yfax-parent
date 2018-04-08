@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.AppUserVo">
+
+	<select id="selectLoginByPhoneNum" resultType="com.yfax.webapi.htt.vo.AppUserVo">
+        select * from htt_app_user where phoneNum=#{phoneNum} or realPhoneNum=#{phoneNum}
+    </select>
+
+	<select id="selectByPhoneNumAndPwd" resultType="com.yfax.webapi.htt.vo.AppUserVo">
+        select * from htt_app_user where phoneNum=#{phoneNum} and userPwd=#{userPwd}
+    </select>
+    
+    <select id="selectIsInviteCodeExist" resultType="java.lang.Long">
+		select count(*) from htt_app_user where inviteCode=#{inviteCode}
+    </select>
+    
+    <select id="selectByInviteCode" resultType="com.yfax.webapi.htt.vo.AppUserVo">
+		select * from htt_app_user where inviteCode=#{inviteCode} limit 1
+    </select>
+    
+    <select id="selectByPhoneNum" resultType="com.yfax.webapi.htt.vo.AppUserVo">
+        select * from htt_app_user where phoneNum=#{phoneNum}
+    </select>
+    
+    <select id="selectByRealPhoneNum" resultType="com.yfax.webapi.htt.vo.AppUserVo">
+        select * from htt_app_user where realPhoneNum=#{phoneNum}
+    </select>
+    
+    <select id="selectAppUserOfMeiCount" resultType="java.lang.Long">
+		select count(*) as count from htt_app_user where imei=#{imei}
+    </select>
+    
+    <!-- 24小时内最多注册5个账号 -->
+    <select id="selectAppUserOfRegisterIp" resultType="java.lang.Long">
+    		<![CDATA[
+		select count(*) as count from htt_app_user where registerIp=#{registerIp} and 
+			registerDate>=#{date1} and registerDate<#{date2}
+		]]>
+    </select>
+    
+    <!-- 统计前二十收益最高的人 -->
+    <select id="selectByRank" resultType="com.yfax.webapi.htt.vo.AppUserVo">
+		select phoneNum, ROUND(total,3) as balance from (select phoneNum, sum(balance) as total 
+			from htt_balance_his where balance like '+%' group by phoneNum order by total desc limit 20) a
+    </select>
+    
+    <!-- 统计前二十获得金币最高的人 -->
+    <select id="selectByRankGold" resultType="com.yfax.webapi.htt.vo.AppUserVo">
+		select phoneNum, goldSum as gold from (select phoneNum, sum(gold) as goldSum 
+			from htt_balance_his where balance like '+%' group by phoneNum order by goldSum desc limit 20) a
+    </select>
+    
+    <!-- 统计总收益金额 -->
+    <select id="selectByRankSum" resultType="java.lang.Long">
+        select ROUND(sum(balance), 3) as sum from htt_balance_his where balance like '+%'
+    </select>
+    
+    <!-- 统计个人剩余总金币 -->
+    <select id="selectByRestGold" resultType="java.lang.Long">
+		select ifnull(sum(gold),0) as gold from htt_award_his where phoneNum=#{phoneNum}
+    </select>
+    
+    <!-- 统计今日获得金币 -->
+    <select id="selectByTodaySum" resultType="java.lang.Long">
+		select ifnull(sum(gold),0) as gold from (
+				select gold from htt_award_his where phoneNum=#{phoneNum}
+					and awardType not in (8,15) and createDate>=#{currentTime}
+				union all 
+				select gold from htt_award_checkin_his where phoneNum=#{phoneNum} 
+					and awardType not in (8,15) and createDate>=#{currentTime}
+				union all 
+				select gold from htt_award_student_his where phoneNum=#{phoneNum}
+					and awardType not in (8,15) and createDate>=#{currentTime}
+				) a
+    </select>
+    
+    <!-- token清除机制 -->
+	<delete id="deleteByTokenId" parameterType="java.lang.String">
+		delete from oauth_access_token where token_id = #{token_id}
+	</delete>
+	
+	<select id="selectTokenIdByPhoneNum" resultType="java.lang.String">
+		select token_id from oauth_access_token where user_name=#{phoneNum}
+	</select>
+	
+	<insert id="insertUser" parameterType="com.yfax.webapi.htt.vo.AppUserVo">
+		insert into htt_app_user
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="phoneNum != null" > phoneNum, </if>
+		  <if test="userPwd != null" > userPwd, </if>
+		  <if test="gold != null" > gold, </if>
+		  <if test="balance != null" > balance, </if>
+		  <if test="userName != null" > userName, </if>
+		  <if test="address != null" > address, </if>
+		  <if test="wechat != null" > wechat, </if>
+		  <if test="qq != null" > qq, </if>
+		  <if test="email != null" > email, </if>
+		  <if test="registerDate != null" > registerDate, </if>
+		  <if test="lastLoginDate != null" > lastLoginDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  <if test="blackList != null" > blackList, </if>
+		  <if test="shareCount != null" > shareCount, </if>
+		  <if test="firstShare != null" > firstShare, </if>
+		  <if test="firstInvite != null" > firstInvite, </if>
+		  <if test="firstRead != null" > firstRead, </if>
+		  <if test="students != null" > students, </if>
+		  <if test="dailyCheckIn != null" > dailyCheckIn, </if>
+		  <if test="continueCheckIn != null" > continueCheckIn, </if>
+		  <if test="dailyReadAward != null" > dailyReadAward, </if>
+		  <if test="dailyVideoAward != null" > dailyVideoAward, </if>
+		  <if test="timeAward != null" > timeAward, </if>
+		  <if test="tabArticle != null" > tabArticle, </if>
+		  <if test="tabVideo != null" > tabVideo, </if>
+		  <if test="inviteCode != null" > inviteCode, </if>
+		  <if test="isMaster != null" > isMaster, </if>
+		  <if test="isMasterFinished != null" > isMasterFinished, </if>
+		  <if test="isInviteStep != null" > isInviteStep, </if>
+		  <if test="isFirstRead != null" > isFirstRead, </if>
+		  <if test="isDailyRead != null" > isDailyRead, </if>
+		  <if test="registerIp != null" > registerIp, </if>
+		  <if test="accountStatus != null" > accountStatus, </if>
+		  <if test="isBindWechat != null" > isBindWechat, </if>
+		  <if test="isBindPhoneNum != null" > isBindPhoneNum, </if>
+		  <if test="isBindAlipay != null" > isBindAlipay, </if>
+		  <if test="isBindTelPhoneNum != null" > isBindTelPhoneNum, </if>
+		  <if test="realPhoneNum != null" > realPhoneNum, </if>
+		  <if test="isDaka != null" > isDaka, </if>
+		  <if test="imei != null" > imei, </if>
+		  <if test="msgCode != null" > msgCode, </if>
+		  <if test="channel != null" > channel, </if>
+		  <if test="sourceAppId != null" > sourceAppId, </if>
+		  <if test="source != null" > source, </if>
+		  <if test="totalGold != null" > totalGold, </if>
+		  <if test="studentsGold != null" > studentsGold, </if>
+		  <if test="isDailyVideo != null" > isDailyVideo, </if>
+		  <if test="versionCode != null" > versionCode, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="phoneNum != null" > #{phoneNum}, </if>
+		  <if test="userPwd != null" > #{userPwd}, </if>
+		  <if test="gold != null" > #{gold}, </if>
+		  <if test="balance != null" > #{balance}, </if>
+		  <if test="userName != null" > #{userName}, </if>
+		  <if test="address != null" > #{address}, </if>
+		  <if test="wechat != null" > #{wechat}, </if>
+		  <if test="qq != null" > #{qq}, </if>
+		  <if test="email != null" > #{email}, </if>
+		  <if test="registerDate != null" > #{registerDate}, </if>
+		  <if test="lastLoginDate != null" > null, </if>
+		  <if test="updateDate != null" > #{updateDate}, </if>
+		  <if test="blackList != null" > #{blackList}, </if>
+		  <if test="shareCount != null" > #{shareCount}, </if>
+		  <if test="firstShare != null" > #{firstShare}, </if>
+		  <if test="firstInvite != null" > #{firstInvite}, </if>
+		  <if test="firstRead != null" > #{firstRead}, </if>
+		  <if test="students != null" > #{students}, </if>
+		  <if test="dailyCheckIn != null" > #{dailyCheckIn}, </if>
+		  <if test="continueCheckIn != null" > #{continueCheckIn}, </if>
+		  <if test="dailyReadAward != null" > #{dailyReadAward}, </if>
+		  <if test="dailyVideoAward != null" > #{dailyVideoAward}, </if>
+		  <if test="timeAward != null" > #{timeAward}, </if>
+		  <if test="tabArticle != null" > #{tabArticle}, </if>
+		  <if test="tabVideo != null" > #{tabVideo}, </if>
+		  <if test="inviteCode != null" > #{inviteCode}, </if>
+		  <if test="isMaster != null" > #{isMaster}, </if>
+		  <if test="isMasterFinished != null" > #{isMasterFinished}, </if>
+		  <if test="isInviteStep != null" > #{isInviteStep}, </if>
+		  <if test="isFirstRead != null" > #{isFirstRead}, </if>
+		  <if test="isDailyRead != null" > #{isDailyRead}, </if>
+		  <if test="registerIp != null" > #{registerIp}, </if>
+		  <if test="accountStatus != null" > #{accountStatus}, </if>
+		  <if test="isBindWechat != null" > #{isBindWechat}, </if>
+		  <if test="isBindPhoneNum != null" > #{isBindPhoneNum}, </if>
+		  <if test="isBindAlipay != null" > #{isBindAlipay}, </if>
+		  <if test="isBindTelPhoneNum != null" > #{isBindTelPhoneNum}, </if>
+		  <if test="realPhoneNum != null" > #{realPhoneNum}, </if>
+		  <if test="isDaka != null" > #{isDaka}, </if>
+		  <if test="imei != null" > #{imei}, </if>
+		  <if test="msgCode != null" > #{msgCode}, </if>
+		  <if test="channel != null" > #{channel}, </if>
+		  <if test="sourceAppId != null" > #{sourceAppId}, </if>
+		  <if test="source != null" > #{source}, </if>
+		  <if test="totalGold != null" > #{totalGold}, </if>
+		  <if test="studentsGold != null" > #{studentsGold}, </if>
+		  <if test="isDailyVideo != null" > #{isDailyVideo}, </if>
+		  <if test="versionCode != null" > #{versionCode}, </if>
+		  
+        </trim>
+	</insert>
+	
+	<update id="updateUser" parameterType="com.yfax.webapi.htt.vo.AppUserVo">
+		update htt_app_user 
+		<set>
+			<if test="phoneNum != null"> version=version+1, </if>
+			<if test="userPwd != null  and userPwd != ''"> userPwd = #{userPwd}, </if>
+			<if test="gold != null and gold != ''"> gold = #{gold}, </if>
+			<if test="balance != null and balance != ''"> balance = #{balance}, </if>
+			<if test="userName != null and userName != ''"> userName = #{userName}, </if>
+			<if test="address != null and address != ''"> address = #{address}, </if>
+			<if test="wechat != null and wechat != ''"> wechat = #{wechat}, </if>
+			<if test="qq != null and qq != ''"> qq = #{qq}, </if>
+			<if test="email != null and email != ''"> email = #{email}, </if>
+			<if test="lastLoginDate != null"> lastLoginDate = #{lastLoginDate}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+			<if test="blackList != null"> blackList = #{blackList}, </if>
+			<if test="shareCount != null"> shareCount = #{shareCount}, </if>
+			<if test="firstShare != null "> firstShare = #{firstShare}, </if>
+			<if test="firstInvite != null"> firstInvite = #{firstInvite}, </if>
+			<if test="firstRead != null"> firstRead = #{firstRead}, </if>
+			<if test="students != null"> students = #{students}, </if>
+			<if test="dailyCheckIn != null"> dailyCheckIn = #{dailyCheckIn}, </if>
+			<if test="continueCheckIn != null"> continueCheckIn = #{continueCheckIn}, </if>
+			<if test="dailyReadAward != null"> dailyReadAward = #{dailyReadAward}, </if>
+			<if test="dailyVideoAward != null"> dailyVideoAward = #{dailyVideoAward}, </if>
+			<if test="timeAward != null"> timeAward = #{timeAward}, </if>
+			<if test="tabArticle != null and tabArticle != ''"> tabArticle = #{tabArticle}, </if>
+			<if test="tabVideo != null and tabVideo != ''"> tabVideo = #{tabVideo}, </if>
+			<if test="inviteCode != null"> inviteCode = #{inviteCode}, </if>
+			<if test="isMaster != null"> isMaster = #{isMaster}, </if>
+			<if test="isMasterFinished != null"> isMasterFinished = #{isMasterFinished}, </if>
+			<if test="isInviteStep != null"> isInviteStep = #{isInviteStep}, </if>
+			<if test="isFirstRead != null"> isFirstRead = #{isFirstRead}, </if>
+			<if test="isDailyRead != null"> isDailyRead = #{isDailyRead}, </if>
+			<if test="registerIp != null"> registerIp = #{registerIp}, </if>
+			<if test="accountStatus != null"> accountStatus = #{accountStatus}, </if>
+			<if test="isBindWechat != null"> isBindWechat = #{isBindWechat}, </if>
+			<if test="isBindPhoneNum != null"> isBindPhoneNum = #{isBindPhoneNum}, </if>
+			<if test="isBindAlipay != null"> isBindAlipay = #{isBindAlipay}, </if>
+			<if test="isBindTelPhoneNum != null"> isBindTelPhoneNum = #{isBindTelPhoneNum}, </if>
+			<if test="realPhoneNum != null"> realPhoneNum = #{realPhoneNum}, </if>
+			<if test="isDaka != null"> isDaka = #{isDaka}, </if>
+			<if test="imei != null"> imei = #{imei}, </if>
+			<if test="msgCode != null"> msgCode = #{msgCode}, </if>
+			<if test="sourceAppId != null"> sourceAppId = #{sourceAppId}, </if>
+			<if test="source != null"> source = #{source}, </if>
+			<if test="totalGold != null"> totalGold = #{totalGold}, </if>
+			<if test="studentsGold != null"> studentsGold = #{studentsGold}, </if>
+			<if test="isDailyVideo != null"> isDailyVideo = #{isDailyVideo}, </if>
+			<if test="versionCode != null"> versionCode = #{versionCode}, </if>
+		</set>
+		where phoneNum = #{phoneNum}
+		<if test="version != null"> 
+			and version=#{version}
+		</if>
+	</update>
+	
+	<update id="updateUserLastLoginDate" parameterType="com.yfax.webapi.htt.vo.AppUserVo">
+		update htt_app_user set lastLoginDate = #{lastLoginDate} where phoneNum = #{phoneNum} 
+	</update>
+   
+</mapper>

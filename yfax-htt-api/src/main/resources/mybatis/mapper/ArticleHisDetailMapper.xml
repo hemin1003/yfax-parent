@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.ArticleHisDetailVo">
+
+	<select id="selectArticleHisDetailByPidAndIp" resultType="com.yfax.webapi.htt.vo.ArticleHisDetailVo">
+        select * from htt_article_his_detail where pid=#{pid} and ip=#{ip} limit 1
+    </select>
+    
+	<insert id="insertArticleHisDetail" parameterType="com.yfax.webapi.htt.vo.ArticleHisDetailVo">
+		insert into htt_article_his_detail
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="pid != null" > pid, </if>
+		  <if test="ip != null" > ip, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="pid != null" > #{pid}, </if>
+		  <if test="ip != null" > #{ip}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > null, </if>
+		  
+        </trim>
+	</insert>
+	
+</mapper>

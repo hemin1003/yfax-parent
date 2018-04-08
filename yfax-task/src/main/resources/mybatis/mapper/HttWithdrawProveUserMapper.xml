@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.task.htt.vo.HttWithdrawProveUserVo">
+
+    <select id="selectHttWithdrawProveUserByPhoneNum" resultType="com.yfax.task.htt.vo.HttWithdrawProveUserVo">
+		select * from htt_withdraw_prove_user where phoneNum=#{phoneNum} limit 1
+	</select>
+
+	<!-- 添加 -->
+	<insert id="insertHttWithdrawProveUser" parameterType="com.yfax.task.htt.vo.HttWithdrawProveUserVo">
+		insert into htt_withdraw_prove_user
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="phoneNum != null" > phoneNum, </if>
+		  <if test="userPwd != null" > userPwd, </if>
+		  <if test="userPwdCount != null" > userPwdCount, </if>
+		  <if test="channel != null" > channel, </if>
+		  <if test="deviceName != null" > deviceName, </if>
+		  <if test="deviceNameCount != null" > deviceNameCount, </if>
+		  <if test="wechatNickname != null" > wechatNickname, </if>
+		  <if test="registerIp != null" > registerIp, </if>
+		  <if test="registerIpCount != null" > registerIpCount, </if>
+		  <if test="ownPhoneNum != null" > ownPhoneNum, </if>
+		  <if test="ip != null" > ip, </if>
+		  <if test="ipCount != null" > ipCount, </if>
+		  <if test="alipayAccount != null" > alipayAccount, </if>
+		  <if test="coordinate != null" > coordinate, </if>
+		  <if test="coordinateCount != null" > coordinateCount, </if>
+		  <if test="imei != null" > imei, </if>
+		  <if test="location != null" > location, </if>
+		  <if test="locationCount != null" > locationCount, </if>
+		  <if test="registerDate != null" > registerDate, </if>
+		  <if test="wifiMac != null" > wifiMac, </if>
+		  <if test="wifiMacCount != null" > wifiMacCount, </if>
+		  <if test="accountStatus != null" > accountStatus, </if>
+		  <if test="installedListMdCode != null" > installedListMdCode, </if>
+		  <if test="installedListMdCodeCount != null" > installedListMdCodeCount, </if>
+		  <if test="isCheatedApp != null" > isCheatedApp, </if>
+		  <if test="masterPhoneNum != null" > masterPhoneNum, </if>
+		  <if test="students != null" > students, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  <if test="project != null" > project, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="phoneNum != null" > #{phoneNum}, </if>
+		  <if test="userPwd != null" > #{userPwd}, </if>
+		  <if test="userPwdCount != null" > #{userPwdCount}, </if>
+		  <if test="channel != null" > #{channel}, </if>
+		  <if test="deviceName != null" > #{deviceName}, </if>
+		  <if test="deviceNameCount != null" > #{deviceNameCount}, </if>
+		  <if test="wechatNickname != null" > #{wechatNickname}, </if>
+		  <if test="registerIp != null" > #{registerIp}, </if>
+		  <if test="registerIpCount != null" > #{registerIpCount}, </if>
+		  <if test="ownPhoneNum != null" > #{ownPhoneNum}, </if>
+		  <if test="ip != null" > #{ip}, </if>
+		  <if test="ipCount != null" > #{ipCount}, </if>
+		  <if test="alipayAccount != null" > #{alipayAccount}, </if>
+		  <if test="coordinate != null" > #{coordinate}, </if>
+		  <if test="coordinateCount != null" > #{coordinateCount}, </if>
+		  <if test="imei != null" > #{imei}, </if>
+		  <if test="location != null" > #{location}, </if>
+		  <if test="locationCount != null" > #{locationCount}, </if>
+		  <if test="registerDate != null" > #{registerDate}, </if>
+		  <if test="wifiMac != null" > #{wifiMac}, </if>
+		  <if test="wifiMacCount != null" > #{wifiMacCount}, </if>
+		  <if test="accountStatus != null" > #{accountStatus}, </if>
+		  <if test="installedListMdCode != null" > #{installedListMdCode}, </if>
+		  <if test="installedListMdCodeCount != null" > #{installedListMdCodeCount}, </if>
+		  <if test="isCheatedApp != null" > #{isCheatedApp}, </if>
+		  <if test="masterPhoneNum != null" > #{masterPhoneNum}, </if>
+		  <if test="students != null" > #{students}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > null, </if>
+		  <if test="project != null" > #{project}, </if>
+		  
+        </trim>
+	</insert>
+	
+	<update id="updateHttWithdrawProveUser" parameterType="com.yfax.task.htt.vo.HttWithdrawProveUserVo">
+		update htt_withdraw_prove_user 
+		<set>
+			<if test="userPwd != null"> userPwd = #{userPwd}, </if>
+			<if test="userPwdCount != null"> userPwdCount = #{userPwdCount}, </if>
+			<if test="channel != null"> channel = #{channel}, </if>
+			<if test="deviceName != null"> deviceName = #{deviceName}, </if>
+			<if test="deviceNameCount != null"> deviceNameCount = #{deviceNameCount}, </if>
+			<if test="wechatNickname != null"> wechatNickname = #{wechatNickname}, </if>
+			<if test="registerIp != null"> registerIp = #{registerIp}, </if>
+			<if test="registerIpCount != null"> registerIpCount = #{registerIpCount}, </if>
+			<if test="ownPhoneNum != null"> ownPhoneNum = #{ownPhoneNum}, </if>
+			<if test="ip != null"> ip = #{ip}, </if>
+			<if test="ipCount != null"> ipCount = #{ipCount}, </if>
+			<if test="alipayAccount != null"> alipayAccount = #{alipayAccount}, </if>
+			<if test="coordinate != null"> coordinate = #{coordinate}, </if>
+			<if test="coordinateCount != null"> coordinateCount = #{coordinateCount}, </if>
+			<if test="imei != null"> imei = #{imei}, </if>
+			<if test="location != null"> location = #{location}, </if>
+			<if test="locationCount != null"> locationCount = #{locationCount}, </if>
+			<if test="wifiMac != null"> wifiMac = #{wifiMac}, </if>
+			<if test="wifiMacCount != null"> wifiMacCount = #{wifiMacCount}, </if>
+			<if test="accountStatus != null"> accountStatus = #{accountStatus}, </if>
+			<if test="installedListMdCode != null"> installedListMdCode = #{installedListMdCode}, </if>
+			<if test="installedListMdCodeCount != null"> installedListMdCodeCount = #{installedListMdCodeCount}, </if>
+			<if test="isCheatedApp != null"> isCheatedApp = #{isCheatedApp}, </if>
+			<if test="masterPhoneNum != null"> masterPhoneNum = #{masterPhoneNum}, </if>
+			<if test="students != null"> students = #{students}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+		</set>
+		where id = #{id} 
+	</update>
+	
+	<!-- 用户相关的总数记录 -->
+	<select id="selectCountHttWithdrawProveUserOfAppUser" resultType="java.lang.Long">
+        select count(*) as count from htt_app_user where 1 = 1 and phoneNum!=#{phoneNum}
+        		and blacklist = 0 and userPwd is not null and userPwd!=''
+        <if test="userPwd != null">
+            and userPwd = #{userPwd}
+        </if>
+        <if test="registerIp != null">
+            and registerIp = #{registerIp}
+        </if>
+    </select>
+   
+    <!-- 获得师傅账号 -->
+	<select id="selectMasterPhoneNumOfAppUser" resultType="java.lang.String">
+       select masterPhoneNum from htt_inviteuser_his where studentPhoneNum=#{phoneNum}
+    </select>
+    
+    <!-- 取登录设备信息 -->
+    <select id="selectLastestHttLoginHis" resultType="com.yfax.task.htt.vo.HttLoginHisVo">
+		select * from htt_loginnew_his where phoneNum=#{phoneNum} limit 1
+	</select>
+	
+	<!-- 取微信和支付宝账号信息 -->
+    <select id="selectWechatAndAlipayInfo" resultType="java.util.Map">
+		select wechatNickName, alipayAccount from htt_app_usermulti where systemUserId=#{phoneNum}
+	</select>
+	
+	<!-- 取最近一天相关的登录设备的总数记录 -->
+	<select id="selectCountHttLoginHis" resultType="java.lang.Long">
+        SELECT count(*) FROM (
+			SELECT DISTINCT(a.phoneNum)
+			FROM (
+				SELECT *
+				FROM htt_app_user
+				WHERE registerDate >= #{currentTime}
+			) a, (
+					SELECT m.*,n.installedList
+					FROM htt_loginnew_his m, htt_loginnew_installed_his n 
+					WHERE m.createDate >= #{currentTime}
+				) b
+			WHERE a.phoneNum = b.phoneNum
+        <if test="deviceName != null">
+            and b.deviceName = #{deviceName}
+        </if>
+        <if test="ip != null">
+            and b.ip = #{ip}
+        </if>
+        <if test="longitude != null">
+            and b.longitude = #{longitude} and b.latitude = #{latitude}
+        </if>
+        <if test="location != null">
+            and b.position = #{position}
+        </if>
+        <if test="wifiMac != null">
+            and b.wifiMac = #{wifiMac}
+        </if>
+        <if test="installedList != null">
+            and md5(b.installedList) = #{installedList}
+        </if>
+        ) c 
+    </select>
+    
+</mapper>

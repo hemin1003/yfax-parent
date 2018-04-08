@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yfax.task.htt.vo.HttSysExpenseReportInfoVo">
+
+	<resultMap id="ResultMap" type="com.yfax.task.htt.vo.HttSysExpenseReportInfoVo">
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="value" property="value" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 用户总金币 -->
+	<select id="selectAllGold" resultMap="ResultMap" parameterType="java.util.Map">
+		select '用户总金币' as name,sum(gold) as value from htt_app_user where blackList=0
+	</select>
+	
+	<!-- 当日用户金币 -->
+	<select id="selectUserGoldOfDay" resultMap="ResultMap" parameterType="java.util.Map">
+		<![CDATA[
+		select '当日用户金币' as name,sum(a.gold) as value from (select * from htt_award_his where createDate>=#{lastHour} and createDate<#{currentTime}) a, (select * from htt_app_user where blackList=0) b
+			where a.phoneNum=b.phoneNum and createDate>=#{lastHour} and createDate<#{currentTime} and awardType not in (8,15)
+		]]>
+	</select>
+
+	<!-- 当日新增用户数 -->
+	<select id="selectNewUserOfDay" resultMap="ResultMap" parameterType="java.util.Map">
+		<![CDATA[
+		select '当日新增用户数' as name,count(1) as value from htt_app_user 
+			where blackList=0 and registerDate>=#{lastHour} and registerDate<#{currentTime}
+		]]>
+	</select>
+	
+	<!-- 全部邀请奖励 -->
+	<select id="selectAllInviteAwardOfDay" resultMap="ResultMap" parameterType="java.util.Map">
+		<![CDATA[
+		select '当日全部邀请奖励' as name,sum(a.gold) as value from (select * from htt_award_his where createDate>=#{lastHour} and createDate<#{currentTime}) a, (select * from htt_app_user where blackList=0) b
+			where a.phoneNum=b.phoneNum and createDate>=#{lastHour} and createDate<#{currentTime} and awardType in (2)
+		]]>
+	</select>
+	
+	<!-- 全部阅读奖励 -->
+	<select id="selectAllReadAwardOfDay" resultMap="ResultMap" parameterType="java.util.Map">
+		<![CDATA[
+		select '当日全部阅读奖励' as name,sum(a.gold) as value from (select * from htt_award_his where createDate>=#{lastHour} and createDate<#{currentTime}) a, (select * from htt_app_user where blackList=0) b
+			where a.phoneNum=b.phoneNum and createDate>=#{lastHour} and createDate<#{currentTime} and awardType in (4)
+		]]>
+	</select>
+	
+	<!-- 全部其他奖励 -->
+	<select id="selectAllOtherAwardOfDay" resultMap="ResultMap" parameterType="java.util.Map">
+		<![CDATA[
+		select '当日全部其他奖励' as name,sum(a.gold) as value from (select * from htt_award_his where createDate>=#{lastHour} and createDate<#{currentTime}) a, (select * from htt_app_user where blackList=0) b
+			where a.phoneNum=b.phoneNum and createDate>=#{lastHour} and createDate<#{currentTime} and awardType not in (2,4,8,15)
+		]]>
+	</select>
+	
+	<!-- 申请提现金额 -->
+	<select id="selectUserWithdrawOfDay" resultMap="ResultMap" parameterType="java.util.Map">
+		<![CDATA[
+		select '申请提现金额' as name,sum(a.income) as value from (select * from htt_withdraw_his) a, (select * from htt_app_user where blackList=0) b
+			where a.phoneNum=b.phoneNum and withdrawTime>=#{lastHour} and withdrawTime<#{currentTime} and withdrawType=#{withdrawType} 
+		]]>
+	</select>
+	
+	<!-- 成功打款金额 -->
+	<select id="selectSuccessWithdrawOfDay" resultMap="ResultMap" parameterType="java.util.Map">
+		<![CDATA[
+		select '成功打款金额' as name,sum(a.income) as value from (select * from htt_withdraw_his) a, (select * from htt_app_user where blackList=0) b
+			where a.phoneNum=b.phoneNum and a.updateDate>=#{lastHour} and a.updateDate<#{currentTime} and withdrawType=#{withdrawType} and statusType in (2,3)
+		]]>
+	</select>
+	
+	<!-- 预计总支出金额 -->
+	<select id="selectAllUserWithdraw" resultMap="ResultMap" parameterType="java.util.Map">
+		select '预计总支出金额' as name,sum(a.income) as value from (select * from htt_withdraw_his) a, (select * from htt_app_user where blackList=0) b
+			where a.phoneNum=b.phoneNum and statusType in (1,6)
+	</select>
+	
+	<!-- 实际已支出总金额 -->
+	<select id="selectAllSuccessWithdraw" resultMap="ResultMap" parameterType="java.util.Map">
+		select '实际已支出总金额' as name,sum(a.income) as value from (select * from htt_withdraw_his) a, (select * from htt_app_user where blackList=0) b
+			where a.phoneNum=b.phoneNum and statusType in (2,3)
+	</select>
+	
+</mapper>

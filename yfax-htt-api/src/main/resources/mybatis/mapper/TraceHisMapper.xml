@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.TraceHisVo">
+
+	<select id="selectTraceHisByUid" resultType="com.yfax.webapi.htt.vo.TraceHisVo">
+		select * from htt_trace_his where uId=#{uId}
+	</select>
+
+	<insert id="insertTraceHis" parameterType="com.yfax.webapi.htt.vo.TraceHisVo">
+		insert into htt_trace_his
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="traceId != null" > traceId, </if>
+		  <if test="phoneNum != null" > phoneNum, </if>
+		  <if test="imei != null" > imei, </if>
+		  <if test="ip != null" > ip, </if>
+		  <if test="apiName != null" > apiName, </if>
+		  <if test="uId != null" > uId, </if>
+		  <if test="source != null" > source, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="traceId != null" > #{traceId}, </if>
+		  <if test="phoneNum != null" > #{phoneNum}, </if>
+		  <if test="imei != null" > #{imei}, </if>
+		  <if test="ip != null" > #{ip}, </if>
+		  <if test="apiName != null" > #{apiName}, </if>
+		  <if test="uId != null" > #{uId}, </if>
+		  <if test="source != null" > #{source}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > null, </if>
+		  
+        </trim>
+	</insert>
+	
+	<update id="updateTraceHis" parameterType="com.yfax.webapi.htt.vo.TraceHisVo">
+		update htt_trace_his 
+		<set>
+			<if test="isUsed != null"> isUsed = #{isUsed}, </if>
+			<if test="phoneNum != null"> phoneNum = #{phoneNum}, </if>
+			<if test="source != null"> source = #{source}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+		</set>
+		where id = #{id}
+	</update>
+	
+</mapper>

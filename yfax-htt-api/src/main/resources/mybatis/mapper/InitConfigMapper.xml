@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.InitConfigVo">
+
+	 <select id="selectInitConfig" resultType="com.yfax.webapi.htt.vo.InitConfigVo">
+        select * from htt_init_config limit 1
+    </select>
+    
+</mapper>

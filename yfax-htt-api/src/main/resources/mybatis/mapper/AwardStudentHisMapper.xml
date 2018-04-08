@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.AwardStudentHisVo">
+
+    <select id="selectAwardStudentHisList" resultType="com.yfax.webapi.htt.vo.AwardStudentHisVo">
+        select * from htt_award_student_his where phoneNum=#{phoneNum} and awardType in (2,5) 
+        	order by createDate desc
+    </select>
+    
+    <!-- 添加 -->
+	<insert id="insertAwardStudentHis" parameterType="com.yfax.webapi.htt.vo.AwardStudentHisVo">
+		insert into htt_award_student_his
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="phoneNum != null" > phoneNum, </if>
+		  <if test="awardType != null" > awardType, </if>
+		  <if test="awardName != null" > awardName, </if>
+		  <if test="gold != null" > gold, </if>
+		  <if test="isCal != null" > isCal, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  <if test="studentPhoneNum != null" > studentPhoneNum, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="phoneNum != null" > #{phoneNum}, </if>
+		  <if test="awardType != null" > #{awardType}, </if>
+		  <if test="awardName != null" > #{awardName}, </if>
+		  <if test="gold != null" > #{gold}, </if>
+		  <if test="isCal != null" > #{isCal}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > null, </if>
+		  <if test="studentPhoneNum != null" > #{studentPhoneNum}, </if>
+		  
+        </trim>
+	</insert>
+	
+</mapper>

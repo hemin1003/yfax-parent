@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.task.htt.vo.HttChannelQualityInfoVo">
+
+	<select id="selectChannelQualityInfoByDate" resultType="com.yfax.task.htt.vo.HttChannelQualityInfoVo">
+		<![CDATA[
+		SELECT left(A.`registerDate`, 10) registerDate, A.channel channel,  
+		       COUNT(distinct B.`phoneNum`) newUsers,  sum(B.c) totalReadingTimes, 
+		       round(sum(if(B.c is null,0, B.c ))/COUNT(distinct B.`phoneNum`),2) avgReadingTimes, 
+               round(sum(if(B.a is null,0, B.a))/2/COUNT(distinct B.`phoneNum`),2) avgReadingMinute, 
+               COUNT(distinct A.`phoneNum`) as realNewUsers, 
+               round(COUNT(distinct B.`phoneNum`)/COUNT(distinct A.`phoneNum`),2) readRatio, 
+               round(sum(if(A.`totalGold`>=20000,1,0))/COUNT(distinct A.`phoneNum`),2) totalGoldMoreThanOneRatio
+        FROM `htt_app_user` as A
+        LEFT JOIN (
+                   SELECT phoneNum, count(*) c, sum(awardCount) a 
+                   FROM `htt_read_his` 
+                   WHERE createDate BETWEEN #{yesterdayTime} AND #{nowTime} 
+                   GROUP BY `phoneNum` 
+                  ) as B on A.`phoneNum` = B.`phoneNum` 
+                  WHERE A.`blackList` = 0  
+                  and  A.`registerDate` BETWEEN  #{yesterdayTime} AND  #{nowTime} 
+                  GROUP BY A.channel
+          ]]>
+	</select>
+
+	<!-- 批量插入 -->
+	<update id="batchInsertChannelQualityInfo" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open=""
+			close="" separator=";">
+			insert into htt_channel_Quality_Info
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="item.id != null"> id, </if>
+				<if test="item.registerDate != null"> registerDate, </if>
+				<if test="item.channel != null"> channel, </if>
+				<if test="item.newUsers != null"> newUsers, </if>
+				<if test="item.totalReadingTimes != null"> totalReadingTimes, </if>
+				<if test="item.avgReadingTimes != null"> avgReadingTimes, </if>
+				<if test="item.avgReadingMinute != null"> avgReadingMinute, </if>
+				<if test="item.realNewUsers != null"> realNewUsers, </if>
+				<if test="item.readRatio != null"> readRatio, </if>
+				<if test="item.totalGoldMoreThanOneRatio != null"> totalGoldMoreThanOneRatio, </if>
+				<if test="item.createDate != null"> createDate, </if>
+				<if test="item.updateDate != null"> updateDate, </if>
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides=",">
+				<if test="item.id != null"> #{item.id}, </if>
+				<if test="item.registerDate != null"> #{item.registerDate}, </if>
+				<if test="item.channel != null"> #{item.channel}, </if>
+				<if test="item.newUsers != null"> #{item.newUsers}, </if>
+				<if test="item.totalReadingTimes != null"> #{item.totalReadingTimes}, </if>
+				<if test="item.avgReadingTimes != null"> #{item.avgReadingTimes}, </if>
+				<if test="item.avgReadingMinute != null"> #{item.avgReadingMinute}, </if>
+				<if test="item.realNewUsers != null"> #{item.realNewUsers}, </if>
+				<if test="item.readRatio != null"> #{item.readRatio}, </if>
+				<if test="item.totalGoldMoreThanOneRatio != null"> #{item.totalGoldMoreThanOneRatio}, </if>
+				<if test="item.createDate != null"> #{item.createDate}, </if>
+				<if test="item.updateDate != null"> null, </if>
+			</trim>
+		</foreach>
+	</update>
+
+</mapper>

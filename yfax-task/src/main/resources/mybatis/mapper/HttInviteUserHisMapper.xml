@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.task.htt.vo.HttInviteUserHisVo">
+
+	<!-- 首次邀请奖励 -->
+    <select id="selectCountByPhoneNum" resultType="java.lang.Long">
+        select count(id) from htt_inviteuser_his where masterPhoneNum=#{phoneNum}
+    </select>
+    
+    <!-- 根据徒弟手机，找到师傅信息 -->
+    <select id="selectInviteUserByStudentPhoneNum" resultType="com.yfax.task.htt.vo.HttInviteUserHisVo">
+        select * from htt_inviteuser_his where studentPhoneNum=#{phoneNum} order by createDate desc limit 1
+    </select>
+    
+    <!-- 看是否互相绑定师傅信息 -->
+    <select id="selectInviteUserByMasAndStuPhoneNum" resultType="com.yfax.task.htt.vo.HttInviteUserHisVo">
+        SELECT * FROM htt_inviteuser_his WHERE masterPhoneNum=#{masterPhoneNum} and studentPhoneNum=#{studentPhoneNum}
+    </select>
+
+    <!-- 添加 -->
+	<insert id="insertInviteUserHis" parameterType="com.yfax.task.htt.vo.HttInviteUserHisVo">
+		insert into htt_inviteuser_his
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="masterPhoneNum != null" > masterPhoneNum, </if>
+		  <if test="studentPhoneNum != null" > studentPhoneNum, </if>
+		  <if test="masterRegisterIp != null" > masterRegisterIp, </if>
+		  <if test="studentRegisterIp != null" > studentRegisterIp, </if>
+		  <if test="registerType != null" > registerType, </if>
+		  <if test="masterImei != null" > masterImei, </if>
+		  <if test="studentImei != null" > studentImei, </if>
+		  <if test="studentMsgCode != null" > studentMsgCode, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  <if test="studentsGold != null" > studentsGold, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="masterPhoneNum != null" > #{masterPhoneNum}, </if>
+		  <if test="studentPhoneNum != null" > #{studentPhoneNum}, </if>
+		  <if test="masterRegisterIp != null" > #{masterRegisterIp}, </if>
+		  <if test="studentRegisterIp != null" > #{studentRegisterIp}, </if>
+		  <if test="registerType != null" > #{registerType}, </if>
+		  <if test="masterImei != null" > #{masterImei}, </if>
+		  <if test="studentImei != null" > #{studentImei}, </if>
+		  <if test="studentMsgCode != null" > #{studentMsgCode}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > null, </if>
+		  <if test="studentsGold != null" > #{studentsGold}, </if>
+		  
+        </trim>
+	</insert>
+	
+	<update id="updateInviteUserHis" parameterType="com.yfax.task.htt.vo.HttInviteUserHisVo">
+		update htt_inviteuser_his 
+		<set>
+			<if test="studentsGold != null"> studentsGold = #{studentsGold}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+		</set>
+		where id = #{id} 
+	</update>
+	
+    <select id="selectCalGoldOfInviteUser" resultType="com.yfax.task.htt.vo.HttInviteUserHisVo">
+		SELECT `phoneNum` as studentPhoneNum, sum(gold) as studentsGold, createDate,masterPhoneNum FROM (
+		 select a.phoneNum, a.gold,a.createDate ,a.masterPhoneNum
+				from (select studentPhoneNum as phoneNum, sum(gold) as gold, createDate,phoneNum as masterPhoneNum from htt_award_his_child where phoneNum=#{masterPhoneNum} 
+				and studentPhoneNum in (select studentPhoneNum from htt_inviteuser_his where masterPhoneNum=#{masterPhoneNum}) 
+				and awardType in (2,5) group by studentPhoneNum order by createDate desc) a inner join htt_app_user b where a.phoneNum=b.phoneNum
+		 
+		union all
+		
+		 select a.phoneNum, a.gold,a.createDate ,a.masterPhoneNum
+				from (select studentPhoneNum as phoneNum, sum(gold) as gold, createDate,phoneNum as masterPhoneNum from htt_award_his where phoneNum=#{masterPhoneNum} 
+				and studentPhoneNum in (select studentPhoneNum from htt_inviteuser_his where masterPhoneNum=#{masterPhoneNum}) 
+				and awardType in (2,5) group by studentPhoneNum order by createDate desc) a inner join htt_app_user b where a.phoneNum=b.phoneNum
+		
+		) c GROUP BY `phoneNum` 
+    </select>
+    
+    <!-- 根据师傅手机，找到所有徒弟信息 -->
+    <select id="selectInviteUserByMasterPhoneNum" resultType="com.yfax.task.htt.vo.HttInviteUserHisVo">
+        select * from htt_inviteuser_his where masterPhoneNum=#{phoneNum}
+	       <if test="currentTime != null">
+	            and createDate >= #{currentTime}
+	        </if>
+    </select>
+	
+</mapper>

@@ -1,0 +1,26 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"></meta>
+</head>
+<body>
+	<script src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
+	<script src="http://yun.tuia.cn/h5-tuia/media/media-3.0.1.min.js"></script>
+	<script>
+		// 推啊
+		new TuiaMedia({
+			appKey: 'xxx',
+			adslotId: 'xxx',
+			local: 'rb',
+			target: '_blank',
+			success: function() {
+				$('.fubiao-dialog').css({
+					'left':  '0%',
+					'top': '0%',
+					'max-width': '100%',
+					'max-height': '100%'
+				});
+			}
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.task.htt.vo.HttDakaReportVo">
+
+	<!-- <select id="selectDakaReportByDate" resultType="com.yfax.task.htt.vo.HttDakaReportVo">
+		<![CDATA[
+       SELECT A.channel channel,COUNT(distinct A.`phoneNum`) newUsers,B.g allIncome,
+       SUM(IF(B.c IS NOT NULL,1,0)) /COUNT(distinct A.`phoneNum`) readUserRate,
+       sum(if(B.c is not NULL,c,0)) /SUM(IF(B.c IS NOT NULL,1,0)) /2 avgReadTime,
+       SUM(A.`students`) / COUNT(distinct A.`phoneNum`) inviteRate
+       FROM `htt_app_user` as A
+       LEFT JOIN (
+            SELECT `phoneNum` , SUM(IF(awardType = 4,1,0)) c, SUM(IF(awardType in (2,5),gold,0)) g 
+                    FROM `htt_award_his`  WHERE createDate > #{yesterdayTime} AND createDate < #{nowTime} GROUP BY `phoneNum` ) B 
+                          ON A.`phoneNum`= B.phoneNum
+                             LEFT JOIN `htt_inviteuser_his` C ON A.phoneNum= C.`studentPhoneNum`
+                                   WHERE A.`registerDate` BETWEEN #{yesterdayTime} AND #{nowTime} 
+                                         GROUP BY C.`masterPhoneNum`
+          ]]>
+	</select> -->
+	<select id="selectDakaReportByDate" resultType="com.yfax.task.htt.vo.HttDakaReportVo">
+		<![CDATA[
+       SELECT A.channel channel,COUNT(distinct A.`phoneNum`) newUsers,B.g allIncome,
+       SUM(IF(B.c IS NOT NULL,1,0)) /COUNT(distinct A.`phoneNum`) readUserRate,
+       sum(if(B.c is not NULL,c,0)) /SUM(IF(B.c IS NOT NULL,1,0)) /2 avgReadTime,
+       SUM(A.`students`) / COUNT(distinct A.`phoneNum`) inviteRate
+       FROM `htt_app_user` as A
+       LEFT JOIN (
+            SELECT `phoneNum` , SUM(IF(awardType = 4,1,0)) c, SUM(IF(awardType in (2,5),gold,0)) g 
+                    FROM `htt_award_his`  WHERE createDate > '2018-01-01' AND createDate < #{nowTime} GROUP BY `phoneNum` ) B 
+                          ON A.`phoneNum`= B.phoneNum
+                             LEFT JOIN `htt_inviteuser_his` C ON A.phoneNum= C.`studentPhoneNum`
+                                   WHERE A.`registerDate` BETWEEN '2018-01-01' AND #{nowTime} 
+                                         GROUP BY C.`masterPhoneNum`
+          ]]>
+	</select>
+
+	<!-- 批量插入 -->
+	<update id="batchInsertDakaReport" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open=""
+			close="" separator=";">
+			insert into htt_daka_report
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="item.id != null"> id, </if>
+				<if test="item.date != null"> date, </if>
+				<if test="item.channel != null"> channel, </if>
+				<if test="item.newUsers != null"> newUsers, </if>
+				<if test="item.allIncome != null"> allIncome, </if>
+				<if test="item.readUserRate != null"> readUserRate, </if>
+				<if test="item.avgReadTime != null"> avgReadTime, </if>
+				<if test="item.inviteRate != null"> inviteRate, </if>
+				<if test="item.createDate != null"> createDate, </if>
+				<if test="item.updateDate != null"> updateDate, </if>
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides=",">
+				<if test="item.id != null"> #{item.id}, </if>
+				<if test="item.date != null"> #{item.date}, </if>
+				<if test="item.channel != null"> #{item.channel}, </if>
+				<if test="item.newUsers != null"> #{item.newUsers}, </if>
+				<if test="item.allIncome != null"> #{item.allIncome}, </if>
+				<if test="item.readUserRate != null"> #{item.readUserRate}, </if>
+				<if test="item.avgReadTime != null"> #{item.avgReadTime}, </if>
+				<if test="item.inviteRate != null"> #{item.inviteRate}, </if>
+				<if test="item.createDate != null"> #{item.createDate}, </if>
+				<if test="item.updateDate != null"> null, </if>
+			</trim>
+		</foreach>
+	</update>
+
+</mapper>

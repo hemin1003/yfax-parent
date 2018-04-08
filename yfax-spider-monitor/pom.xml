@@ -1,0 +1,215 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.yfax</groupId>
+		<artifactId>yfax-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>yfax-spider-monitor</artifactId>
+	<packaging>jar</packaging>
+
+	<name>yfax-spider-monitor</name>
+	<description>Spring Boot, MVC, Rest API for App</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>in-project</id>
+			<name>In Project Repo</name>
+			<url>file://${project.basedir}/libs</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>com.vaadin.external.google</groupId>
+					<artifactId>android-json</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.jayway.jsonpath</groupId>
+					<artifactId>json-path</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- 构建成可运行的Web项目 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<!-- servlet-api的依赖 -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!-- Mysql数据库集成 -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- 数据库操作API集成 自带的tomcat数据连接池 <dependency> <groupId>org.springframework.boot</groupId> 
+			<artifactId>spring-boot-starter-data-jpa</artifactId> </dependency> -->
+		<!--添加适用于生产环境的功能，如性能指标和监测等功能。 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<!-- 为应用提供一些开发时特性，包括默认值设置，自动重启，livereload等 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<!-- mybatis集成 -->
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib-ext-spring</artifactId>
+		</dependency>
+		<!-- 需手机集成短信包，安装到本机库 mvn install:install-file -Dfile=CCP_REST_SMS_SDK_JAVA_v2.6.3r.jar 
+			-DgroupId=CCP_REST_SMS_SDK -DartifactId=CCP_REST_SMS_SDK -Dversion=1.0 -Dpackaging=jar -->
+		<dependency>
+			<groupId>CCP_REST_SMS_SDK</groupId>
+			<artifactId>CCP_REST_SMS_SDK</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.yfax</groupId>
+			<artifactId>yfax-utils</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.yfax</groupId>
+			<artifactId>yfax-common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>us.codecraft</groupId>
+			<artifactId>webmagic-core</artifactId>
+			<version>0.6.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>guava</artifactId>
+					<groupId>com.google.guava</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-lang3</artifactId>
+					<groupId>org.apache.commons</groupId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.jayway.jsonpath</groupId>
+					<artifactId>json-path</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>us.codecraft</groupId>
+			<artifactId>webmagic-extension</artifactId>
+			<version>0.6.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>transport</artifactId>
+            <version>5.1.2</version>
+		</dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+        </dependency>
+        <dependency>
+			<groupId>com.hankcs</groupId>
+			<artifactId>hanlp</artifactId>
+			<version>portable-1.2.9</version>
+		</dependency>
+		<dependency>
+	        <groupId>org.nlpcn</groupId>
+	        <artifactId>nlp-lang</artifactId>
+	        <version>1.7</version>
+	    </dependency>
+	    <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.1</version>
+        </dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-codec</artifactId>
+					<groupId>commons-codec</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>18.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.elasticsearch</groupId>
+			<artifactId>elasticsearch</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+	        <artifactId>json-path</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>javax.mail-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>yfax-spider-monitor</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+</project>

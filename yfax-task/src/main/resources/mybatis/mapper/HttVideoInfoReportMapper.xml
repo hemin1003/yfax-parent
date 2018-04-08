@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.task.htt.vo.HttVideoInfoReportVo">
+
+   <select id="selectVideoInfoReportByDate" resultType="com.yfax.task.htt.vo.HttVideoInfoReportVo">
+		<![CDATA[
+		SELECT A.*, 
+		       B.videoUserNum, 
+		       round(B.videoUserNum/A.activeUserNum,2) videoRate, 
+		       B.totalVideoNum, 
+		       round(B.avgVideoNum,2) avgVideoNum, 
+		       B.totalVideoGold, 
+		       round(B.avgVideoGold,2) avgVideoGold, 
+		       round(B.avgVideoGoldTimes,2) avgVideoGoldTimes 
+		FROM (
+              SELECT LEFT(`createDate`, 10) satisticDate, COUNT(DISTINCT `phoneNum`) activeUserNum 
+              FROM `htt_award_his` 
+              GROUP BY LEFT(`createDate`, 10) having satisticDate = #{day}
+              ) AS A
+              LEFT JOIN (
+              SELECT LEFT(`createDate`, 10) satisticDate, COUNT(DISTINCT `phoneNum`) videoUserNum, COUNT(*) totalVideoNum, COUNT(*)/COUNT(DISTINCT `phoneNum`) avgVideoNum, SUM(`gold`) totalVideoGold, SUM(`gold`)/COUNT(DISTINCT `phoneNum`) avgVideoGold, SUM(`gold`)/COUNT(*) avgVideoGoldTimes 
+              FROM `htt_award_his` 
+              WHERE awardType = 13 
+              GROUP BY LEFT(`createDate`, 10) 
+              ) AS B
+              ON A.satisticDate = B.satisticDate  
+          ]]> 
+	</select>
+	
+	<update id="insertVideoInfoReport"  parameterType="com.yfax.task.htt.vo.HttVideoInfoReportVo">
+            insert into htt_video_Info_report
+			<trim prefix="(" suffix=")" suffixOverrides="," >
+			  <if test="id != null" > id, </if>
+			  <if test="satisticDate != null" > satisticDate, </if>
+			  <if test="activeUserNum != null" > activeUserNum, </if>
+			  <if test="videoUserNum != null" > videoUserNum, </if>
+			  <if test="videoRate != null" > videoRate, </if>
+			  <if test="totalVideoNum != null" > totalVideoNum, </if>
+			  <if test="avgVideoNum != null" > avgVideoNum, </if>
+			  <if test="totalVideoGold != null" > totalVideoGold, </if>
+			  <if test="avgVideoGold != null" > avgVideoGold, </if>
+			  <if test="avgVideoGoldTimes != null" > avgVideoGoldTimes, </if>
+			  <if test="createDate != null" > createDate, </if>
+			  <if test="updateDate != null" > updateDate, </if>
+			</trim>
+	        <trim prefix="values (" suffix=")" suffixOverrides="," >
+			  <if test="id != null" > #{id}, </if>
+			  <if test="satisticDate != null" > #{satisticDate}, </if>
+			  <if test="activeUserNum != null" > #{activeUserNum}, </if>
+			  <if test="videoUserNum != null" > #{videoUserNum}, </if>
+			  <if test="videoRate != null" > #{videoRate}, </if>
+			  <if test="totalVideoNum != null" > #{totalVideoNum}, </if>
+			  <if test="avgVideoNum != null" > #{avgVideoNum}, </if>
+			  <if test="totalVideoGold != null" > #{totalVideoGold}, </if>
+			  <if test="avgVideoGold != null" > #{avgVideoGold}, </if>
+			  <if test="avgVideoGoldTimes != null" > #{avgVideoGoldTimes}, </if>
+			  <if test="createDate != null" > #{createDate}, </if>
+			  <if test="updateDate != null" > null, </if>
+	        </trim>
+    </update>
+   
+</mapper>

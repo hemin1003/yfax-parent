@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yfax.task.htt.vo.HttSysUserReportInfoVo">
+
+	<resultMap id="ResultMap" type="com.yfax.task.htt.vo.HttSysUserReportInfoVo">
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="value" property="value" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 用户总数 -->
+	<select id="selectAllUserInfo" resultMap="ResultMap" parameterType="java.util.Map">
+		select '用户总数' as name,count(1) as value from htt_app_user where blackList=0
+	</select>
+	
+	<!-- 当日新增用户数 -->
+	<select id="selectNewUserInfoOfDay" resultMap="ResultMap" parameterType="java.util.Map">
+		<![CDATA[
+		select '当日新增用户数' as name,count(1) as value from htt_app_user 
+			where blackList=0 and registerDate>=#{lastHour} and registerDate<#{currentTime}
+		]]>
+	</select>
+	
+	<!-- 当日自邀请新增 -->
+	<select id="selectInviteUserOfDay" resultMap="ResultMap" parameterType="java.util.Map">
+		<![CDATA[
+		select '当日自邀请新增' as name,count(a.studentPhoneNum) as value from 
+		(select * from htt_inviteuser_his where createDate>=#{lastHour} and createDate<#{currentTime}) a, 
+		(select * from htt_app_user where blackList=0 and registerDate>=#{lastHour} and registerDate<#{currentTime}) b
+			where a.studentPhoneNum=b.phoneNum and createDate>=#{lastHour} and createDate<#{currentTime}
+		]]>
+	</select>
+	
+	<!-- 阅读文章数 -->
+	<select id="selectArticleCountOfDay" resultMap="ResultMap" parameterType="java.util.Map">
+		<![CDATA[
+		select '阅读文章数' as name,count(distinct primaryKey) as value from htt_read_his 
+			where createDate>=#{lastHour} and createDate<#{currentTime}
+		]]>
+	</select>
+	
+	<!-- 文章阅读次数 -->
+	<select id="selectReadCountOfDay" resultMap="ResultMap" parameterType="java.util.Map">
+		<![CDATA[
+		select '阅读文章次数' as name,sum(awardCount) as value from htt_read_his 
+			where createDate>=#{lastHour} and createDate<#{currentTime}
+		]]>
+	</select>
+</mapper>

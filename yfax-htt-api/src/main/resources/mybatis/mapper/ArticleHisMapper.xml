@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.ArticleHisVo">
+
+    <select id="selectArticleHisByPhoneNumAndArticleUrlMd" resultType="com.yfax.webapi.htt.vo.ArticleHisVo">
+        select * from htt_article_his where phoneNum=#{phoneNum} and articleUrlMd=#{articleUrlMd} limit 1
+    </select>
+    
+	<insert id="insertArticleHis" parameterType="com.yfax.webapi.htt.vo.ArticleHisVo">
+		insert into htt_article_his
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="phoneNum != null" > phoneNum, </if>
+		  <if test="articleUrl != null" > articleUrl, </if>
+		  <if test="articleUrlMd != null" > articleUrlMd, </if>
+		  <if test="isAward != null" > isAward, </if>
+		  <if test="awardCount != null" > awardCount, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="phoneNum != null" > #{phoneNum}, </if>
+		  <if test="articleUrl != null" > #{articleUrl}, </if>
+		  <if test="articleUrlMd != null" > #{articleUrlMd}, </if>
+		  <if test="isAward != null" > #{isAward}, </if>
+		  <if test="awardCount != null" > #{awardCount}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > null, </if>
+		  
+        </trim>
+	</insert>
+	
+	<update id="updateArticleHis" parameterType="com.yfax.webapi.htt.vo.ArticleHisVo">
+		update htt_article_his 
+		<set>
+			<if test="awardCount != null"> awardCount = #{awardCount}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+		</set>
+		where id = #{id} 
+	</update>
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.HolidayActivityRankingVo">
+
+     <!-- 排行榜 -->
+	 <select id="selectRanking" resultType="com.yfax.webapi.htt.vo.HolidayActivityRankingVo">
+       	select `date`,ifNull(userName,phoneNum) phoneNum,realNewUsers,ranking from htt_holiday_activity_ranking 
+       	where date = #{date} order by ranking asc limit 30
+    </select>
+    
+    <!-- 根据phoneNum查询 -->
+    <select id="selectRankingByPhoneNum" resultType="com.yfax.webapi.htt.vo.HolidayActivityRankingVo">
+       	select * from htt_holiday_activity_ranking where date = #{date} and phoneNum=#{phoneNum}
+    </select>
+   
+    <select id="selectLastRanking" resultType="com.yfax.webapi.htt.vo.HolidayActivityRankingVo">
+        <![CDATA[
+       	select * from htt_holiday_activity_ranking where date = #{date} and ranking < #{ranking} order by ranking desc limit 1
+       	]]>
+    </select>
+</mapper>

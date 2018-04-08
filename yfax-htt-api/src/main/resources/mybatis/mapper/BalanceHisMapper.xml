@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.BalanceHisVo">
+
+	<select id="selectBalanceHisByPhoneNum" resultType="com.yfax.webapi.htt.vo.BalanceHisVo">
+        select * from htt_balance_his where phoneNum=#{phoneNum} order by createDate desc
+    </select>
+    
+    <select id="selectBalanceHisByType" resultType="java.lang.Long">
+        select count(id) as count from htt_balance_his where phoneNum=#{phoneNum} 
+        and balanceType=#{balanceType} order by createDate desc
+    </select>
+
+    <!-- 添加 -->
+	<insert id="insertBalanceHis" parameterType="com.yfax.webapi.htt.vo.BalanceHisVo">
+		insert into htt_balance_his
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="phoneNum != null" > phoneNum, </if>
+		  <if test="balanceType != null" > balanceType, </if>
+		  <if test="balanceName != null" > balanceName, </if>
+		  <if test="gold != null" > gold, </if>
+		  <if test="balance != null" > balance, </if>
+		  <if test="rate != null" > rate, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="phoneNum != null" > #{phoneNum}, </if>
+		  <if test="balanceType != null" > #{balanceType}, </if>
+		  <if test="balanceName != null" > #{balanceName}, </if>
+		  <if test="gold != null" > #{gold}, </if>
+		  <if test="balance != null" > #{balance}, </if>
+		  <if test="rate != null" > #{rate}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > null, </if>
+		  
+        </trim>
+	</insert>
+</mapper>

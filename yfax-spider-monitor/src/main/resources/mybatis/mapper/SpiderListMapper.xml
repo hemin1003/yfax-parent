@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.spider.vo.SpiderInfoVo">
+
+ 	<select id="selectSpiderInfo" resultType="com.yfax.spider.vo.SpiderInfoVo">
+        select * from ytt_spider_list where domain=#{domain} and date=#{date} 
+        		order by updateDate desc, createDate desc limit 1
+    </select>
+    
+    <select id="selectLastestSpiderInfo" resultType="com.yfax.spider.vo.SpiderInfoVo">
+        	select * from ytt_spider_list where date=#{date} order by updateDate desc limit 1
+    </select>
+    
+    <select id="selectDaysOfNewsNum" resultType="java.lang.Long" parameterType="com.yfax.spider.vo.SpiderInfoVo">
+		select ifnull(sum(newsNum),0) as num from ytt_spider_list where domain=#{domain} and date=#{date}
+	</select>
+
+    <!-- 添加 -->
+	<insert id="insertSpiderInfo" parameterType="com.yfax.spider.vo.SpiderInfoVo">
+		insert into ytt_spider_list
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="domain != null" > domain, </if>
+		  <if test="domainName != null" > domainName, </if>
+		  <if test="date != null" > date, </if>
+		  <if test="newsNum != null" > newsNum, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="domain != null" > #{domain}, </if>
+		  <if test="domainName != null" > #{domainName}, </if>
+		  <if test="date != null" > #{date}, </if>
+		  <if test="newsNum != null" > #{newsNum}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > null, </if>
+		  
+        </trim>
+	</insert>
+	
+	<update id="updateSpiderInfo" parameterType="com.yfax.spider.vo.SpiderInfoVo">
+		update ytt_spider_list 
+		<set>
+			<if test="domain != null"> domain = #{domain}, </if>
+			<if test="domainName != null"> domainName = #{domainName}, </if>
+			<if test="date != null"> date = #{date}, </if>
+			<if test="newsNum != null"> newsNum = #{newsNum}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+			
+		</set>
+		where id = #{id} 
+	</update>
+	
+</mapper>

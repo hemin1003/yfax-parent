@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.task.htt.vo.HttDeleteBlacklistToken">
+
+	<delete id="deleteBlacklistToken">
+		DELETE  from oauth_access_token
+		        WHERE token_id in 
+		                       (select * from 
+		                       (select token_id from oauth_access_token 
+                                where user_name in 
+                                (select phoneNum 
+                                         from htt_app_user 
+                                          WHERE blackList =1)) a)
+	</delete>
+	
+	<delete id="deleteHttOauthRefreshToken">
+		truncate oauth_refresh_token
+	</delete>
+
+</mapper>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.SdkCallbackHisVo">
+
+    <insert id="insertSdkCallbackHis" parameterType="com.yfax.webapi.htt.vo.SdkCallbackHisVo">
+        insert into htt_sdk_callback_his
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+          <if test="orderid != null" > orderid, </if>
+          <if test="cid != null" > cid, </if>
+          <if test="cuid != null" > cuid, </if>
+          <if test="devid != null" > devid, </if>
+          <if test="adname != null" > adname, </if>
+          <if test="time != null" > time, </if>
+          <if test="timeDate != null" > timeDate, </if>
+          
+          <if test="points != null" > points, </if>
+          <if test="atype != null" > atype, </if>
+          <if test="sign != null" > sign, </if>
+          <if test="sip != null" > sip, </if>
+          
+          <if test="createDate != null" > createDate, </if>
+          <if test="updateDate != null" > updateDate, </if>
+           <if test="mySign != null" > mySign, </if>
+          <if test="sdkType != null" > sdkType, </if>
+          <if test="result != null" > result, </if>
+          
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+          <if test="orderid != null" > #{orderid}, </if>
+          <if test="cid != null" > #{cid}, </if>
+          <if test="cuid != null" > #{cuid}, </if>
+          <if test="devid != null" > #{devid}, </if>
+          <if test="adname != null" > #{adname}, </if>
+          <if test="time != null" > #{time}, </if>
+          <if test="timeDate != null" > #{timeDate}, </if>
+          
+          <if test="points != null" > #{points}, </if>
+          <if test="atype != null" > #{atype}, </if>
+          <if test="sign != null" > #{sign}, </if>
+          <if test="sip != null" > #{sip}, </if>
+          
+          <if test="createDate != null" > #{createDate}, </if>
+          <if test="updateDate != null" > null, </if>
+          <if test="mySign != null" > #{mySign}, </if>
+          <if test="sdkType != null" > #{sdkType}, </if>
+          <if test="result != null" > #{result}, </if>
+          
+        </trim>
+    </insert>
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.LoginHisNewInstalledListVo">
+
+	<!-- 添加 -->
+	<insert id="insertLoginHisNewInstalledList" parameterType="com.yfax.webapi.htt.vo.LoginHisNewInstalledListVo">
+		insert into htt_loginnew_installed_his
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null"> id, </if>
+			<if test="pid != null"> pid, </if>
+			<if test="installedList != null"> installedList, </if>
+			<if test="createDate != null"> createDate, </if>
+			<if test="updateDate != null"> updateDate, </if>
+
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null"> #{id}, </if>
+			<if test="pid != null"> #{pid}, </if>
+			<if test="installedList != null"> #{installedList}, </if>
+			<if test="createDate != null"> #{createDate}, </if>
+			<if test="updateDate != null"> null, </if>
+
+		</trim>
+	</insert>
+</mapper>

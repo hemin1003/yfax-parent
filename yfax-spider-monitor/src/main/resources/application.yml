@@ -1,0 +1,88 @@
+# 不同的环境使用不同的配置
+# 默认的profile为dev，其他环境通过指定启动参数使用不同的profile，比如：
+# 测试环境：java -jar xxx.jar --spring.profiles.active=test
+# 生产环境：java -jar xxx.jar --spring.profiles.active=prod
+spring: 
+  profiles: 
+    active: test
+  datasource: 
+    # mysql
+    username: root
+    password: Yfax2016
+    driver-class-name: com.mysql.jdbc.Driver
+    # 默认使用Tomcat自带db连接池
+    maximum-pool-size: 50
+    max-idle: 10
+    max-wait: 5000
+    min-idle: 5
+    initial-size: 30
+    validation-query: SELECT 1
+    test-on-borrow: false
+    test-while-idle: true
+    time-between-eviction-runs-millis: 18800
+  jpa: 
+    hibernate: 
+      ddl-auto: update
+    show-sql: true
+  jackson: 
+    serialization:
+      indent_output: true
+  #mvc: 
+  #  view:
+  #    prefix: /pages/
+  #    suffix: .html
+  thymeleaf: 
+    prefix: classpath:/templates/
+  jmx: 
+    default-domain: agentservice
+
+# tomcat
+server:
+  tomcat: 
+    # 默认200
+    max-threads: 1000
+    uri-encoding: UTF-8
+  error: 
+    path: /error
+  port: 8989
+  #自定义session失效时间
+  session: 
+    timeout: 60
+    
+# 设置jmx注册不同名
+endpoints: 
+  jmx: 
+    domain: agentservice
+    unique-names: true
+    
+#自定义属性
+name: zhangsan
+age: 30
+address: hanzhou
+remark: my name is ${name}
+
+# mybatis
+mybatis: 
+  config-location: classpath:mybatis-config.xml
+  
+#下面这一行务必不能少，区分不同配置，而且必须是三个字符"-"
+---
+# 开发环境配置
+spring:
+  profiles: dev
+  datasource: 
+    url: jdbc:mysql://192.168.56.101:3306/cfdb?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+
+---
+# 测试环境配置
+spring:
+  profiles: test
+  datasource:
+     url: jdbc:mysql://182.92.82.188:33061/cfdb?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+
+---
+# 生产环境配置
+spring: 
+  profiles: prod
+  datasource: 
+    url: jdbc:mysql://192.168.56.101:3306/cfdb?useUnicode=true&characterEncoding=UTF-8&useSSL=false

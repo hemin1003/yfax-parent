@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.IpShareCodeVo">
+
+	<select id="selectIpShareCodeIsFromIp" resultType="com.yfax.webapi.htt.vo.IpShareCodeVo">
+        select * from htt_ip_sharecode where sourceIp=#{sourceIp} and isUsed=1 order by createDate desc limit 1
+    </select>
+
+	<select id="selectIpShareCodeByIp" resultType="com.yfax.webapi.htt.vo.IpShareCodeVo">
+        select * from htt_ip_sharecode where sourceIp=#{sourceIp} and shareCode=#{shareCode} 
+        		order by createDate desc limit 1
+    </select>
+
+    <!-- 添加 -->
+	<insert id="insertIpShareCode" parameterType="com.yfax.webapi.htt.vo.IpShareCodeVo">
+		insert into htt_ip_sharecode
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="sourceIp != null" > sourceIp, </if>
+		  <if test="shareCode != null" > shareCode, </if>
+		  <if test="isUsed != null" > isUsed, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  <if test="tyToken != null" > tyToken, </if>
+		  <if test="tyTaskCode != null" > tyTaskCode, </if>
+		  <if test="tyResult != null" > tyResult, </if>
+		  <if test="tyIsFinished != null" > tyIsFinished, </if>
+		  <if test="xbInfo != null" > xbInfo, </if>
+		  <if test="xbResult != null" > xbResult, </if>
+		  <if test="xbIsFinished != null" > xbIsFinished, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="sourceIp != null" > #{sourceIp}, </if>
+		  <if test="shareCode != null" > #{shareCode}, </if>
+		  <if test="isUsed != null" > #{isUsed}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > null, </if>
+		  <if test="tyToken != null" > #{tyToken}, </if>
+		  <if test="tyTaskCode != null" > #{tyTaskCode}, </if>
+		  <if test="tyResult != null" > #{tyResult}, </if>
+		  <if test="tyIsFinished != null" > #{tyIsFinished}, </if>
+		  <if test="xbInfo != null" > #{xbInfo}, </if>
+		  <if test="xbResult != null" > #{xbResult}, </if>
+		  <if test="xbIsFinished != null" > #{xbIsFinished}, </if>
+		  
+        </trim>
+	</insert>
+	
+	<!-- 把创建时间更新，因为绑定 -->
+	<update id="updateIpShareCode" parameterType="com.yfax.webapi.htt.vo.IpShareCodeVo">
+		update htt_ip_sharecode 
+		<set>
+			<if test="sourceIp != null"> sourceIp = #{sourceIp}, </if>
+			<if test="shareCode != null"> shareCode = #{shareCode}, </if>
+			<if test="isUsed != null"> isUsed = #{isUsed}, </if>
+			<if test="createDate != null"> createDate = #{createDate}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+			<if test="tyToken != null"> tyToken = #{tyToken}, </if>
+			<if test="tyTaskCode != null"> tyTaskCode = #{tyTaskCode}, </if>
+			<if test="tyResult != null"> tyResult = #{tyResult}, </if>
+			<if test="tyIsFinished != null"> tyIsFinished = #{tyIsFinished}, </if>
+			<if test="xbResult != null"> xbResult = #{xbResult}, </if>
+			<if test="xbIsFinished != null"> xbIsFinished = #{xbIsFinished}, </if>
+			
+		</set>
+		where id = #{id} 
+	</update>
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <package name="com.yfax.webapi"/>
+    </typeAliases>
+    <mappers>
+    		
+    		
+    		<mapper resource="mybatis/mapper/HttAppUserMapper.xml"/>
+    		<mapper resource="mybatis/mapper/HttWithdrawHisMapper.xml"/>
+    		<mapper resource="mybatis/mapper/HttAwardHisMapper.xml"/>
+    		
+    		<mapper resource="mybatis/mapper/HttExpenseInfoMapper.xml"/>
+    		<mapper resource="mybatis/mapper/HttSysExpenseReportInfoMapper.xml"/>
+    		<mapper resource="mybatis/mapper/HttInviteUserHisMapper.xml"/>
+    		<mapper resource="mybatis/mapper/HttLoginHisMapper.xml"/>
+    		
+    		<mapper resource="mybatis/mapper/HttWithdrawProveUserMapper.xml"/>
+    		<mapper resource="mybatis/mapper/HttChannelQualityInfoMapper.xml"/>
+    		<mapper resource="mybatis/mapper/HttIpSharecodeMapper.xml"/>
+    		<mapper resource="mybatis/mapper/HttSmsActiveUserMapper.xml"/>
+    		<mapper resource="mybatis/mapper/HttReadInfoReportMapper.xml"/>
+    		<mapper resource="mybatis/mapper/HttVideoInfoReportMapper.xml"/>
+
+    		<mapper resource="mybatis/mapper/HttUserInfoMapper.xml"/>
+    		<mapper resource="mybatis/mapper/HttSysUserReportInfoMapper.xml"/>
+    		
+    		<mapper resource="mybatis/mapper/HttBlacklistHisMapper.xml"/>
+    		<mapper resource="mybatis/mapper/HttWithdrawProveUserLinkMapper.xml"/>
+    		<mapper resource="mybatis/mapper/HttDeleteBlacklistTokenMapper.xml"/>
+    		<mapper resource="mybatis/mapper/HttHolidayActivityInviteUserRankingMapper.xml"/>
+    		
+    		<mapper resource="mybatis/mapper/HttDeleteTableDataMapper.xml"/>
+    		<mapper resource="mybatis/mapper/HttDakaReportMapper.xml"/>
+    </mappers>
+</configuration>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.task.htt.vo.HttWithdrawHisVo">
+
+	<!-- 取提现状态“处理中”的数据 -->
+	<select id="selectHttWithdrawHisByProve" resultType="com.yfax.task.htt.vo.HttWithdrawHisVo">
+		<![CDATA[
+		  select distinct phoneNum from htt_withdraw_his where withdrawTime >=#{startTime} 
+				and withdrawTime <=#{endTime} and statusType=1
+		]]>
+    </select>
+
+	<!-- 取微信提现记录，且为审核成功状态，时间升序 -->
+	<select id="selectHttWithdrawHis" resultType="com.yfax.task.htt.vo.HttWithdrawHisVo">
+		<![CDATA[
+			select * from htt_withdraw_his where withdrawType=3 and statusType=6 order by createDate
+		]]>
+    </select>
+
+	<update id="updateHttWithdrawHis" parameterType="com.yfax.task.htt.vo.HttWithdrawHisVo">
+		update htt_withdraw_his 
+		<set>
+			<if test="status != null"> status = #{status}, </if>
+			<if test="statusType != null"> statusType = #{statusType}, </if>
+			<if test="failMsg != null"> failMsg = #{failMsg}, </if>
+			<if test="failCode != null"> failCode = #{failCode}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<select id="selectHttWithdrawHisByPhoneNum" resultType="com.yfax.task.htt.vo.HttWithdrawHisVo">
+		select * from htt_withdraw_his where phoneNum=#{phoneNum} and statusType not in (2,4,7)
+    </select>
+    
+    <update id="updateHttWithdrawHisForBlackList" parameterType="com.yfax.task.htt.vo.HttWithdrawHisVo">
+		update htt_withdraw_his set statusType=7,status='审核失败',failMsg='防作弊系统-审核失败',updateDate=#{updateDate}
+		where phoneNum=#{phoneNum}
+	</update>
+	
+	<!-- 取支付宝提现记录，且为审核成功状态，时间升序 -->
+	<select id="selectHttWithdrawHisForAlipay" resultType="com.yfax.task.htt.vo.HttWithdrawHisVo">
+		<![CDATA[
+			select * from htt_withdraw_his where withdrawType=2 and statusType=6 order by createDate
+		]]>
+    </select>
+   
+</mapper>

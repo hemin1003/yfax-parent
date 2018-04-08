@@ -1,0 +1,156 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.yfax</groupId>
+		<artifactId>yfax-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>yfax-task</artifactId>
+	<packaging>jar</packaging>
+
+	<name>yfax-task</name>
+	<description>Spring Boot, MVC, Rest API for App</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>in-project</id>
+			<name>In Project Repo</name>
+			<url>file://${project.basedir}/libs</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>com.vaadin.external.google</groupId>
+					<artifactId>android-json</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- 构建成可运行的Web项目 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<!-- servlet-api的依赖 -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!-- Redis集成 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+		<!-- Mysql数据库集成 -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- 数据库操作API集成 自带的tomcat数据连接池 <dependency> <groupId>org.springframework.boot</groupId> 
+			<artifactId>spring-boot-starter-data-jpa</artifactId> </dependency> -->
+		<!--添加适用于生产环境的功能，如性能指标和监测等功能。 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<!-- 为应用提供一些开发时特性，包括默认值设置，自动重启，livereload等 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<!-- mybatis集成 -->
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib-ext-spring</artifactId>
+		</dependency>
+		<!-- 需手机集成信鸽依赖，安装到本机库 mvn install:install-file -Dfile=PushJavaSDK.jar -DgroupId=PushJavaSDK 
+			-DartifactId=PushJavaSDK -Dversion=1.0 -Dpackaging=jar -->
+		<dependency>
+			<groupId>PushJavaSDK</groupId>
+			<artifactId>PushJavaSDK</artifactId>
+		</dependency>
+		<!-- 需手机集成短信包，安装到本机库 mvn install:install-file -Dfile=CCP_REST_SMS_SDK_JAVA_v2.6.3r.jar 
+			-DgroupId=CCP_REST_SMS_SDK -DartifactId=CCP_REST_SMS_SDK -Dversion=1.0 -Dpackaging=jar -->
+		<dependency>
+			<groupId>CCP_REST_SMS_SDK</groupId>
+			<artifactId>CCP_REST_SMS_SDK</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<!--引入druid最新maven依赖 -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.yfax</groupId>
+			<artifactId>yfax-utils</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.yfax</groupId>
+			<artifactId>yfax-common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>jdom</groupId>
+			<artifactId>jdom</artifactId>
+			<version>1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+		</dependency>
+		<!-- 需集成支付宝集成，安装到本机库 mvn install:install-file -Dfile=alipay-sdk-java20171201160035.jar 
+			-DgroupId=alipay-sdk -DartifactId=alipay-sdk -Dversion=1.0 -Dpackaging=jar -->
+		<dependency>
+			<groupId>alipay-sdk</groupId>
+			<artifactId>alipay-sdk</artifactId>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<finalName>yfax-task</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+</project>

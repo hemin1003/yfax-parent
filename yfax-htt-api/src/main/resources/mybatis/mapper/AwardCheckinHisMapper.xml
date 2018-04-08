@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.AwardCheckinHisVo">
+
+	<select id="selectAllAwardCheckinHisList" resultType="com.yfax.webapi.htt.vo.AwardCheckinHisVo">
+        select * from htt_award_checkin_his where phoneNum=#{phoneNum} and awardType=3 
+        order by createDate desc limit 100
+    </select>
+    
+    <select id="selectAwardCheckinHisList" resultType="com.yfax.webapi.htt.vo.AwardCheckinHisVo">
+        select * from htt_award_checkin_his where phoneNum=#{phoneNum} and awardType=3 and isCal=0 
+        		order by createDate desc limit 7
+    </select>
+    
+    <!-- 添加 -->
+	<insert id="insertAwardCheckinHis" parameterType="com.yfax.webapi.htt.vo.AwardCheckinHisVo">
+		insert into htt_award_checkin_his
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="phoneNum != null" > phoneNum, </if>
+		  <if test="awardType != null" > awardType, </if>
+		  <if test="awardName != null" > awardName, </if>
+		  <if test="gold != null" > gold, </if>
+		  <if test="isCal != null" > isCal, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="phoneNum != null" > #{phoneNum}, </if>
+		  <if test="awardType != null" > #{awardType}, </if>
+		  <if test="awardName != null" > #{awardName}, </if>
+		  <if test="gold != null" > #{gold}, </if>
+		  <if test="isCal != null" > #{isCal}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > null, </if>
+		  
+        </trim>
+	</insert>
+	
+    <!-- 查当日签到记录 -->
+    <select id="selectAwardHisCheckInAward" resultType="java.lang.Long">
+		select count(id) as count from htt_award_checkin_his where phoneNum=#{phoneNum} 
+			and createDate>#{currentTime} and awardType=3
+    </select>
+    
+    <update id="updateUserAwardHisCheckInTotalFlag" parameterType="com.yfax.webapi.htt.vo.AwardHisVo">
+		update htt_award_checkin_his set isCal=1 where phoneNum=#{phoneNum} and awardType=#{awardType} and isCal=0
+	</update>
+    
+</mapper>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<base target="_blank" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="apple-mobile-web-app-capable" content="yes"></meta>
+<meta http-equiv="Cache-Control" name="no-store"></meta>
+<meta content="telephone=no" name="format-detection"></meta>
+<meta content="email=no" name="format-detection"></meta>
+<meta charset="utf-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"></meta>
+<!--  
+<meta name="viewport"
+	content="target-densitydpi=device-dpi,width=decive-width,initial-scale=1,maximum-scale=1"></meta>
+-->
+<title>下载APP</title>
+<style type="text/css">
+
+body {
+	top: 0;
+	width: 100%;
+	height: 80%;
+	background: url('http://otml7va16.bkt.clouddn.com/main_bg.png') no-repeat;
+	background-size: 100%;
+}
+
+.myCenter {
+	width: 80%;
+    height: 30%;
+    background-color: #FFFFFF;
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: 20%;
+    margin: auto;
+    border-radius:15px;
+}
+
+.myBotmDiv {
+    position: fixed;
+	bottom: 0px;
+	left: 0px;
+}
+
+.myBotm {
+    width: 80%;
+    height: 30%;
+    margin: auto;
+}
+
+.regClass {
+    width: 55%;
+    height: 55%;
+}
+
+</style>
+</head>
+<body>
+	<div>
+		<input id="url" type="hidden" th:value="${url}"/>
+		<div class="myCenter">
+			<table>
+				<tr>
+					<td><input class="regClass" type="image" src="http://otml7va16.bkt.clouddn.com/reg_top.jpeg"/></td>
+					<td><input name="phonenum" type="text" id="phonenum" placeholder="请输入手机号"/></td>
+				</tr>
+				<tr>
+					<td><input class="regClass" type="image" src="http://otml7va16.bkt.clouddn.com/reg_middle.jpeg"/></td>
+					<td><input name="msgcode" type="text" id="msgcode" placeholder="请输入短信验证码"/></td>
+				</tr>
+				<tr>
+					<td><input class="regClass" type="image" src="http://otml7va16.bkt.clouddn.com/reg_bottom.jpeg"/></td>
+					<td><input name="userpwd" type="text" id="userpwd" placeholder="请设置密码(6-20位字母或数字)"/></td>
+				</tr>
+			</table>
+		</div>
+		<div  class="myBotmDiv">
+			<input class="myBotm" type="image" src="http://otml7va16.bkt.clouddn.com/main_bottom.png"/>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+
+function download(){
+	window.location.assign(document.getElementById('url').value);
+}
+
+</script>
+</html>

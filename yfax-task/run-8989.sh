@@ -1,0 +1,1 @@
+nohup java -jar ./target/yfax-task.jar --spring.profiles.active=prod --server.port=7979 > run-htt.log 2>&1 &

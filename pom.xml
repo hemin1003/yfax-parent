@@ -1,0 +1,205 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.yfax</groupId>
+	<artifactId>yfax-parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>yfax-parent</name>
+	<packaging>pom</packaging>
+	<description>聚合</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<spring-version>4.3.7.RELEASE</spring-version>
+		<spring-boot-version>1.5.2.RELEASE</spring-boot-version>
+	</properties>
+
+	<modules>
+		<module>yfax-common</module>
+		<module>yfax-utils</module>
+		<module>yfax-task</module>
+		<module>yfax-spider</module>
+		<module>yfax-spider-monitor</module>
+		<module>yfax-htt-api</module>
+	</modules>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.2.RELEASE</version>
+	</parent>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>3.8.1</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-test</artifactId>
+				<exclusions>
+					<exclusion>
+						<groupId>com.vaadin.external.google</groupId>
+						<artifactId>android-json</artifactId>
+					</exclusion>
+				</exclusions>
+				<version>${spring-boot-version}</version>
+			</dependency>
+			<!-- 构建成可运行的Web项目 -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-web</artifactId>
+				<!-- 移除嵌入式tomcat插件 -->
+				<exclusions>
+					<exclusion>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-starter-tomcat</artifactId>
+					</exclusion>
+				</exclusions>
+				<version>${spring-boot-version}</version>
+			</dependency>
+			<!-- servlet-api的依赖 -->
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<scope>provided</scope>
+				<version>3.1.0</version>
+			</dependency>
+			<!-- Redis集成 -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-data-redis</artifactId>
+				<version>${spring-boot-version}</version>
+			</dependency>
+			<!-- Mysql数据库集成 -->
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<scope>runtime</scope>
+				<version>5.1.41</version>
+			</dependency>
+			<!-- 数据库操作API集成 自带的tomcat数据连接池 <dependency> <groupId>org.springframework.boot</groupId> 
+				<artifactId>spring-boot-starter-data-jpa</artifactId> </dependency> -->
+			<!--添加适用于生产环境的功能，如性能指标和监测等功能。 -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-actuator</artifactId>
+				<version>${spring-boot-version}</version>
+			</dependency>
+			<!-- 为应用提供一些开发时特性，包括默认值设置，自动重启，livereload等 -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-devtools</artifactId>
+				<optional>true</optional>
+				<version>${spring-boot-version}</version>
+			</dependency>
+			<!-- mybatis集成 -->
+			<dependency>
+				<groupId>org.mybatis.spring.boot</groupId>
+				<artifactId>mybatis-spring-boot-starter</artifactId>
+				<version>1.1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>net.sf.json-lib</groupId>
+				<artifactId>json-lib-ext-spring</artifactId>
+				<version>1.0.2</version>
+			</dependency>
+			<!-- 需手机集成信鸽依赖，安装到本机库 mvn install:install-file -Dfile=PushJavaSDK.jar 
+				-DgroupId=PushJavaSDK -DartifactId=PushJavaSDK -Dversion=1.0 -Dpackaging=jar -->
+			<dependency>
+				<groupId>PushJavaSDK</groupId>
+				<artifactId>PushJavaSDK</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<!-- 需手机集成短信包，安装到本机库 mvn install:install-file -Dfile=CCP_REST_SMS_SDK_JAVA_v2.6.3r.jar 
+				-DgroupId=CCP_REST_SMS_SDK -DartifactId=CCP_REST_SMS_SDK -Dversion=1.0 -Dpackaging=jar -->
+			<dependency>
+				<groupId>CCP_REST_SMS_SDK</groupId>
+				<artifactId>CCP_REST_SMS_SDK</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<!-- web页面解析 -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-thymeleaf</artifactId>
+				<version>${spring-boot-version}</version>
+			</dependency>
+			<!--引入druid最新maven依赖 -->
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid</artifactId>
+				<version>1.0.29</version>
+			</dependency>
+			<!--SpringSecurity -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-security</artifactId>
+				<version>${spring-boot-version}</version>
+			</dependency>
+			<!--SpringSecurityOAuth2 -->
+			<dependency>
+				<groupId>org.springframework.security.oauth</groupId>
+				<artifactId>spring-security-oauth2</artifactId>
+				<version>2.0.13.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>1.7.24</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
+			<dependency>
+				<groupId>javax.mail</groupId>
+				<artifactId>javax.mail-api</artifactId>
+				<version>1.6.0</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.mail</groupId>
+				<artifactId>javax.mail</artifactId>
+				<version>1.6.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.elasticsearch</groupId>
+				<artifactId>elasticsearch</artifactId>
+				<version>5.1.2</version>
+			</dependency>
+			<dependency>
+				<groupId>com.jayway.jsonpath</groupId>
+				<artifactId>json-path</artifactId>
+				<version>0.8.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>4.5.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-api</artifactId>
+				<version>2.7</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-core</artifactId>
+				<version>2.7</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpmime</artifactId>
+				<version>4.5.2</version>
+			</dependency>
+			<!-- 需集成支付宝集成，安装到本机库 mvn install:install-file -Dfile=alipay-sdk-java20171201160035.jar 
+				-DgroupId=alipay-sdk -DartifactId=alipay-sdk -Dversion=1.0 -Dpackaging=jar -->
+			<dependency>
+				<groupId>alipay-sdk</groupId>
+				<artifactId>alipay-sdk</artifactId>
+				<version>1.0</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+</project>

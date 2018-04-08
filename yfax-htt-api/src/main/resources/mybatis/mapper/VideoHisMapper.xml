@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.VideoHisVo">
+
+	<select id="selectVideoHisById" resultType="com.yfax.webapi.htt.vo.VideoHisVo">
+		select * from htt_video_his where id=#{id}
+    </select>
+
+	<select id="selectVideoHisByPhoneNum" resultType="com.yfax.webapi.htt.vo.VideoHisVo">
+        select * from htt_video_his where phoneNum=#{phoneNum} order by createDate desc, updateDate desc limit 50
+    </select>
+    
+    <select id="selectVideoInfoHisByPhoneNumAndPrimaryKey" resultType="com.yfax.webapi.htt.vo.VideoHisVo">
+        select * from htt_videoinfo_his where phoneNum=#{phoneNum} and primaryKey=#{primaryKey} 
+       		order by updateDate desc, createDate desc limit 1
+    </select>
+    
+    <select id="selectVideoHisByPhoneNumAndPrimaryKey" resultType="com.yfax.webapi.htt.vo.VideoHisVo">
+        select * from htt_video_his where phoneNum=#{phoneNum} and primaryKey=#{primaryKey} 
+       		order by updateDate desc, createDate desc limit 1
+    </select>
+    
+    <!-- 查询今日已累积获得视频奖励次数 -->
+    <select id="selectVideoHisByAwardCount" resultType="java.lang.Long">
+        select ifnull(sum(awardCount),0) as sum from htt_video_his where phoneNum=#{phoneNum} 
+        		and createDate>#{currentTime}
+    </select>
+    
+    <!-- 首次有效视频 -->
+    <select id="selectVideoHisCountByPhoneNum" resultType="java.lang.Long">
+        select count(id) from htt_video_his where phoneNum=#{phoneNum} and isAward=1
+    </select>
+    
+    <!-- 添加奖励视频历史 -->
+	<insert id="insertVideoHis" parameterType="com.yfax.webapi.htt.vo.VideoHisVo">
+		insert into htt_video_his
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="phoneNum != null" > phoneNum, </if>
+		  <if test="data != null" > data, </if>
+		  <if test="primaryKey != null" > primaryKey, </if>
+		  <if test="isAward != null" > isAward, </if>
+		  <if test="awardCount != null" > awardCount, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="phoneNum != null" > #{phoneNum}, </if>
+		  <if test="data != null" > #{data}, </if>
+		  <if test="primaryKey != null" > #{primaryKey}, </if>
+		  <if test="isAward != null" > #{isAward}, </if>
+		  <if test="awardCount != null" > #{awardCount}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > null, </if>
+		  
+        </trim>
+	</insert>
+	
+	<!-- 添加视频浏览历史 -->
+	<insert id="insertVideoHisInfo" parameterType="com.yfax.webapi.htt.vo.VideoHisVo">
+		insert into htt_videoinfo_his
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="phoneNum != null" > phoneNum, </if>
+		  <if test="data != null" > data, </if>
+		  <if test="primaryKey != null" > primaryKey, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="phoneNum != null" > #{phoneNum}, </if>
+		  <if test="data != null" > #{data}, </if>
+		  <if test="primaryKey != null" > #{primaryKey}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > null, </if>
+		  
+        </trim>
+	</insert>
+	
+	<update id="updateVideoHis" parameterType="com.yfax.webapi.htt.vo.VideoHisVo">
+		update htt_video_his 
+		<set>
+			<if test="phoneNum != null"> phoneNum = #{phoneNum}, </if>
+			<if test="data != null"> data = #{data}, </if>
+			<if test="primaryKey != null"> primaryKey = #{primaryKey}, </if>
+			<if test="isAward != null"> isAward = #{isAward}, </if>
+			<if test="awardCount != null"> awardCount = #{awardCount}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+		</set>
+		where id = #{id} 
+	</update>
+</mapper>

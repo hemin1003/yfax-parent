@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.LoginHisVo">
+
+	<select id="selectLoginHisDate" resultType="com.yfax.webapi.htt.vo.LoginHisVo">
+		select * from htt_login_his where phoneNum=#{phoneNum} order by createDate desc limit 1
+	</select>
+	
+	<select id="selectCountOfLoginHisImei" resultType="java.lang.Long">
+		select count(distinct phoneNum) as count from htt_login_his 
+			where phoneNum!=#{phoneNum} and imei=#{imei} and createDate>#{currentTime}
+	</select>
+	
+	<select id="selectCountOfLoginHisPhoneNum" resultType="java.lang.Long">
+		select count(distinct imei) as count from htt_login_his 
+			where phoneNum=#{phoneNum} and createDate>#{currentTime}
+	</select>
+
+    <!-- 添加 -->
+	<insert id="insertLoginHis" parameterType="com.yfax.webapi.htt.vo.LoginHisVo">
+		insert into htt_login_his
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="phoneNum != null" > phoneNum, </if>
+		  <if test="deviceName != null" > deviceName, </if>
+		  <if test="imei != null" > imei, </if>
+		  <if test="ip != null" > ip, </if>
+		  <if test="mac != null" > mac, </if>
+		  <if test="location != null" > location, </if>
+		  <if test="longitude != null" > longitude, </if>
+		  <if test="latitude != null" > latitude, </if>
+		  <if test="position != null" > position, </if>
+		  <if test="wifi != null" > wifi, </if>
+		  <if test="installedList != null" > installedList, </if>
+		  <if test="wifiMac != null" > wifiMac, </if>
+		  <if test="isRoot != null" > isRoot, </if>
+		  <if test="sIp != null" > sIp, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  <if test="channel != null" > channel, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="phoneNum != null" > #{phoneNum}, </if>
+		  <if test="deviceName != null" > #{deviceName}, </if>
+		  <if test="imei != null" > #{imei}, </if>
+		  <if test="ip != null" > #{ip}, </if>
+		  <if test="mac != null" > #{mac}, </if>
+		  <if test="location != null" > #{location}, </if>
+		  
+		  <if test="longitude != null" > #{longitude}, </if>
+		  <if test="latitude != null" > #{latitude}, </if>
+		  <if test="position != null" > #{position}, </if>
+		  
+		  <if test="wifi != null" > #{wifi}, </if>
+		  <if test="installedList != null" > #{installedList}, </if>
+		  <if test="wifiMac != null" > #{wifiMac}, </if>
+		  <if test="isRoot != null" > #{isRoot}, </if>
+		  <if test="sIp != null" > #{sIp}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > null, </if>
+		  <if test="channel != null" > #{channel}, </if>
+		  
+        </trim>
+	</insert>
+	
+	<update id="updateLoginHis" parameterType="com.yfax.webapi.htt.vo.LoginHisVo">
+		update htt_login_his 
+		<set>
+			<if test="isUsed != null"> isUsed = #{isUsed}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+		</set>
+		where id = #{id}
+	</update>
+</mapper>

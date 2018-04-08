@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.UserSmsVo">
+
+	<select id="selectUserSms" resultType="com.yfax.webapi.htt.vo.UserSmsVo">
+        select * from cfdb_user_sms where phoneNum=#{phoneNum} and msgCode=#{msgCode} 
+        ORDER BY createDate DESC limit 1
+    </select>
+    
+    <select id="selectLastestUserSms" resultType="com.yfax.webapi.htt.vo.UserSmsVo">
+        select * from cfdb_user_sms where phoneNum=#{phoneNum} ORDER BY createDate DESC limit 1
+    </select>
+    
+    <select id="selectUserSmsByPhoneNum" resultType="java.lang.Long">
+        select count(*) as count from cfdb_user_sms where phoneNum=#{phoneNum} 
+        		and createDate>#{currentTime}
+    </select>
+    
+    <select id="selectUserSmsByMsgCode" resultType="com.yfax.webapi.htt.vo.UserSmsVo">
+        select * from cfdb_user_sms where msgCode=#{msgCode} ORDER BY createDate DESC limit 1
+    </select>
+
+    <!-- 添加 -->
+	<insert id="insertUserSms" parameterType="com.yfax.webapi.htt.vo.UserSmsVo">
+		insert into cfdb_user_sms
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="phoneId != null" > phoneId, </if>
+		  <if test="phoneNum != null" > phoneNum, </if>
+		  <if test="msgCode != null" > msgCode, </if>
+		  <if test="projectCode != null" > projectCode, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="phoneId != null" > #{phoneId}, </if>
+		  <if test="phoneNum != null" > #{phoneNum}, </if>
+		  <if test="msgCode != null" > #{msgCode}, </if>
+		  <if test="projectCode != null" > #{projectCode}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > null, </if>
+		  
+        </trim>
+	</insert>
+</mapper>

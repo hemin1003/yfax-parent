@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.task.htt.vo.HttExpenseInfoVo">
+
+
+	<!-- 根据date与scolumn查询是否存在记录 -->
+	<select id="selectHttExpenseInfo" resultType="com.yfax.task.htt.vo.HttExpenseInfoVo">
+		select * from htt_expense_info where date=#{date} and scolumn = #{scolumn}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insertHttExpenseInfo" parameterType="com.yfax.task.htt.vo.HttExpenseInfoVo">
+		insert into htt_expense_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null"> id, </if>
+			<if test="date != null"> date, </if>
+			<if test="scolumn != null"> scolumn, </if>
+			<if test="sname != null"> sname, </if>
+			<if test="nums != null"> nums, </if>
+			<if test="createDate != null"> createDate, </if>
+			<if test="updateDate != null"> updateDate, </if>
+
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null"> #{id}, </if>
+			<if test="date != null"> #{date}, </if>
+			<if test="scolumn != null"> #{scolumn}, </if>
+			<if test="sname != null"> #{sname}, </if>
+			<if test="nums != null"> #{nums}, </if>
+			<if test="createDate != null"> #{createDate}, </if>
+			<if test="updateDate != null"> null, </if>
+
+		</trim>
+	</insert>
+	
+	<!-- 根据id更新 -->
+	<update id="updateHttExpenseInfoById" parameterType="com.yfax.task.htt.vo.HttExpenseInfoVo">
+		update 
+			htt_expense_info 
+		<set>
+			<if test="date != null"> date = #{date}, </if>
+			<if test="scolumn != null"> scolumn = #{scolumn}, </if>
+			<if test="sname != null"> sname = #{sname}, </if>
+			<if test="nums != null"> nums = #{nums}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+			<if test="updatedBy != null"> updatedBy = #{updatedBy}, </if>
+		</set>
+		where id = #{id} 
+	</update>
+
+</mapper>

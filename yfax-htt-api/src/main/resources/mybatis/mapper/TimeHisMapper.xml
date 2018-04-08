@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.TimeHisVo">
+
+	<select id="selectTimeHisDate" resultType="com.yfax.webapi.htt.vo.TimeHisVo">
+		select * from htt_time_his where phoneNum=#{phoneNum} order by createDate desc limit 1
+	</select>
+
+    <!-- 添加 -->
+	<insert id="insertTimeHis" parameterType="com.yfax.webapi.htt.vo.TimeHisVo">
+		insert into htt_time_his
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="isUsed != null" > isUsed, </if>
+		  <if test="phoneNum != null" > phoneNum, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="isUsed != null" > #{isUsed}, </if>
+		  <if test="phoneNum != null" > #{phoneNum}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > null, </if>
+		  
+        </trim>
+	</insert>
+	
+	<update id="updateTimeHis" parameterType="com.yfax.webapi.htt.vo.TimeHisVo">
+		update htt_time_his 
+		<set>
+			<if test="id != null"> version=version+1, </if>
+			<if test="isUsed != null"> isUsed = #{isUsed}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+		</set>
+		where id = #{id} and version=#{version}
+	</update>
+</mapper>

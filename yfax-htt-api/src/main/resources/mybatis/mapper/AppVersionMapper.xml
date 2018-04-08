@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.AppVersionVo">
+
+    <select id="selectAppVersion" resultType="com.yfax.webapi.htt.vo.AppVersionVo">
+		select * from htt_app_version
+	</select>
+	
+</mapper>

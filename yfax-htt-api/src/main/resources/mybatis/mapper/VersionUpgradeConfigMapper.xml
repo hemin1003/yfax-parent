@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.VersionUpgradeConfigVo">
+
+	 <select id="selectVersionUpdateByVersionCodeAndChannel" resultType="com.yfax.webapi.htt.vo.VersionUpgradeConfigVo">
+       	select apkurl,updateType,description ,versionName
+       	       from htt_version_upgrade_config 
+               where channel=#{channel} and versionCode>#{versionCode} 
+               order by createDate desc limit 1
+    </select>
+    
+</mapper>

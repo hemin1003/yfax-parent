@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.task.htt.vo.HttIpSharecodeVo">
+   
+   <!-- 选出天翼空间任务未完成用户 -->
+   <select id="selectHttIpSharecodeUnFinished" resultType="com.yfax.task.htt.vo.HttIpSharecodeVo">
+		select * from htt_ip_sharecode where tyIsFinished=0 and tyToken is not null and tyTaskCode='A_0001'
+	</select>
+	
+	<!-- 批量更新 -->
+	<update id="batchUpdateHttIpSharecodeUnFinished"  parameterType="java.util.List">
+          <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update 
+				htt_ip_sharecode 
+			<set>
+				<if test="item.tyIsFinished != null"> tyIsFinished = #{item.tyIsFinished}, </if>
+				<if test="item.tyResult != null"> tyResult = #{item.tyResult}, </if>
+				<if test="item.updateDate != null"> updateDate = #{item.updateDate}, </if>
+			</set>
+			where id = #{item.id} 
+         </foreach>
+    </update>
+   
+</mapper>

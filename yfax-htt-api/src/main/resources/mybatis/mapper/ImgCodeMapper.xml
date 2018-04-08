@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.ImgCodeVo">
+
+	<select id="selectLastestImgCodeByPhoneNum" resultType="com.yfax.webapi.htt.vo.ImgCodeVo">
+		select * from htt_img_code where phoneNum=#{phoneNum} order by createDate desc limit 1
+	</select>
+
+	<select id="selectImgCodeByPhoneNum" resultType="com.yfax.webapi.htt.vo.ImgCodeVo">
+		select * from htt_img_code where phoneNum=#{phoneNum} 
+			and imgCode=#{imgCode} order by createDate desc limit 1
+	</select>
+	
+	<insert id="insertImgCode" parameterType="com.yfax.webapi.htt.vo.ImgCodeVo">
+		insert into htt_img_code
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="phoneNum != null" > phoneNum, </if>
+		  <if test="imgCode != null" > imgCode, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="phoneNum != null" > #{phoneNum}, </if>
+		  <if test="imgCode != null" > #{imgCode}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > null, </if>
+		  
+        </trim>
+	</insert>
+	
+	<update id="updateImgCode" parameterType="com.yfax.webapi.htt.vo.ImgCodeVo">
+		update htt_img_code 
+		<set>
+			<if test="isUsed != null"> isUsed = #{isUsed}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+		</set>
+		where id = #{id}
+	</update>
+	
+</mapper>

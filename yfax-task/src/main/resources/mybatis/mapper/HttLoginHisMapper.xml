@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.task.htt.vo.HttLoginHisVo">
+	<select id="selectHttLoginHis" resultType="com.yfax.task.htt.vo.HttLoginHisVo">
+		select * from
+		htt_loginnew_his where phoneNum=#{phoneNum} and
+		createDate>=#{currentTime} order by createDate
+		limit 1
+	</select>
+	
+	<select id="selectHttLoginHisOfOutRoots" resultType="com.yfax.task.htt.vo.HttLoginHisVo">
+		select * from htt_loginnew_his where phoneNum=#{phoneNum} 
+		and createDate>=#{currentTime}
+		and isRoot='1'
+		order by createDate limit 1
+	</select>
+
+	<select id="selectHttLoginHisOfCheatApps" resultType="com.yfax.task.htt.vo.HttLoginHisVo">
+		select * from htt_loginnew_installed_his where pid in (select id from htt_loginnew_his 
+			where phoneNum=#{phoneNum} and createDate>=#{currentTime}) 
+			and createDate>=#{currentTime}
+			and (
+			installedList like '%应用变量%' or
+			installedList like '%信息修改%' or 
+			installedList like '%悦头条注册%' or
+			installedList like '%008神器%' or
+			installedList like '%悦头条辅助%' or
+			installedList like '%神器V5%' or
+			installedList like '%Zone悬浮球%' or
+			installedList like '%脚本精灵%' or
+			installedList like '%悦头条分身%' or 
+			installedList like '%触摸精灵%' or 
+			installedList like '%点击助手%' or 
+			installedList like '%惠悦%' or 
+			installedList like '%赚钱脚本%' or 
+			installedList like '%挂机脚本%' or 
+			installedList like '%脚本精灵%' or 
+			installedList like '%头条脚本%' or
+			installedList like '%头条辅助%')
+			order by createDate limit 1
+	</select>
+	
+	<select id="selectHttLoginHisSuspectOfCheatApps" resultType="com.yfax.task.htt.vo.HttLoginHisVo">
+		select * from htt_loginnew_installed_his where pid in (select id from htt_loginnew_his 
+			where phoneNum=#{phoneNum} and createDate>=#{currentTime}) 
+			and createDate>=#{currentTime}
+			and (
+			installedList like '%按键精灵%' or
+			installedList like '%Xposed%')
+			order by createDate limit 1
+	</select>
+</mapper>

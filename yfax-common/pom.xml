@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.yfax</groupId>
+		<artifactId>yfax-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<name>yfax-common</name>
+	<artifactId>yfax-common</artifactId>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
+	</properties>
+
+	<dependencies>
+		
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib-ext-spring</artifactId>
+		</dependency>
+		<!-- 
+			需手机集成信鸽依赖，安装到本机库
+			mvn install:install-file -Dfile=PushJavaSDK.jar -DgroupId=PushJavaSDK -DartifactId=PushJavaSDK -Dversion=1.0 -Dpackaging=jar
+		-->
+		<dependency>
+			<groupId>PushJavaSDK</groupId>
+			<artifactId>PushJavaSDK</artifactId>
+		</dependency>
+		<!-- 
+			需手机集成短信包，安装到本机库
+			mvn install:install-file -Dfile=CCP_REST_SMS_SDK_JAVA_v2.6.3r.jar -DgroupId=CCP_REST_SMS_SDK -DartifactId=CCP_REST_SMS_SDK -Dversion=1.0 -Dpackaging=jar
+		-->
+		<dependency>
+			<groupId>CCP_REST_SMS_SDK</groupId>
+			<artifactId>CCP_REST_SMS_SDK</artifactId>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-api</artifactId>
+		</dependency>
+		
+		<dependency>
+            <groupId>com.yfax</groupId>
+            <artifactId>yfax-utils</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+	</dependencies>
+</project>

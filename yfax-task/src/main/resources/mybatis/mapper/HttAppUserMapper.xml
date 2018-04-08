@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.task.htt.vo.HttAppUserVo">
+
+	<select id="selectHttAppUserVoByPhoneNum" resultType="com.yfax.task.htt.vo.HttAppUserVo">
+		select * from htt_app_user where phoneNum=#{phoneNum}
+	</select>
+
+	<select id="selectHttAllUser" resultType="com.yfax.task.htt.vo.HttAppUserVo">
+        select * from htt_app_user where continueCheckIn=1 or isInviteStep=1 or isDailyRead=1 or isDailyVideo=1
+    </select>
+    
+    <select id="selectHttAllUserNotBlackList" resultType="com.yfax.task.htt.vo.HttAppUserVo">
+        	select * from htt_app_user where blackList=0
+    </select>
+    
+    <!-- 统计个人剩余总金币 -->
+    <select id="selectByRestGold" resultType="java.lang.Long">
+		select ifnull(sum(gold),0) as gold from htt_award_his where phoneNum=#{phoneNum}
+    </select>
+    
+    <!-- 统计总获得金币 -->
+    <select id="selectByTotalGold" resultType="java.lang.Long">
+		select ifnull(sum(gold),0) as gold from htt_award_his where phoneNum=#{phoneNum} 
+			and awardType not in (8,15)
+    </select>
+    
+    <!-- 统计徒弟总贡献金额 -->
+    <select id="selectByStudentTotalGold" resultType="java.lang.Long">
+		select ifnull(sum(gold),0) as gold from htt_award_his where phoneNum=#{phoneNum} 
+			and awardType in (2,5)
+    </select>
+
+	<update id="updateHttUser" parameterType="com.yfax.task.htt.vo.HttAppUserVo">
+		update htt_app_user 
+		<set>
+			<if test="accountStatus != null"> accountStatus = #{accountStatus}, </if>
+			<if test="blackRuleDesc != null"> blackRuleDesc = #{blackRuleDesc}, </if>
+			<if test="blackList != null"> blackList = #{blackList}, </if>
+			<if test="balance != null"> balance = #{balance}, </if>
+			<if test="continueCheckIn != null"> continueCheckIn = #{continueCheckIn}, </if>
+			<if test="isInviteStep != null"> isInviteStep = #{isInviteStep}, </if>
+			<if test="isDailyRead != null"> isDailyRead = #{isDailyRead}, </if>
+			<if test="gold != null"> gold = #{gold}, </if>
+			<if test="totalGold != null"> totalGold = #{totalGold}, </if>
+			<if test="studentsGold != null"> studentsGold = #{studentsGold}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+		</set>
+		where phoneNum = #{phoneNum} 
+	</update>
+	
+	<!-- 一周徒弟新增5个及以上的师傅用户 -->
+    <select id="selectMasterByStudentNums" resultType="com.yfax.task.htt.vo.HttAppUserVo">
+		SELECT b.* FROM (SELECT count(masterPhoneNum) as nums, masterPhoneNum 
+			FROM htt_inviteuser_his where createDate>=#{currentTime} GROUP BY masterPhoneNum HAVING nums>=5) a, 
+			(SELECT * FROM htt_app_user) b where a.masterPhoneNum=b.PhoneNum and b.blackList>=0
+    </select>
+    
+    <!-- 设置用户是否黑名单 -->
+    <update id="updateHttUserForBlackList">
+		update htt_app_user 
+		<set>
+			<if test="blackList != null"> blackList = #{blackList}, </if>
+			<if test="blackRuleDesc != null"> blackRuleDesc = #{blackRuleDesc}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+			<if test="accountStatus != null"> accountStatus = #{accountStatus}, </if>
+		</set>
+		where phoneNum = #{phoneNum} 
+	</update>
+	
+	<select id="selectHttAllUserByDate" resultType="com.yfax.task.htt.vo.HttAppUserVo">
+		select * from htt_app_user where registerDate>=#{currentTime} and blackList>=0
+	</select>
+	
+	<select id="selectHttAllUserByCalIps" resultType="com.yfax.task.htt.vo.HttAppUserVo">
+		SELECT phoneNum, registerIp, registerDate, accountStatus, blackRuleDesc FROM `htt_app_user` WHERE registerDate>=#{currentTime} and blackList>=0 
+			and registerIp in (SELECT registerIp FROM (
+			select `registerIp` , count(registerIp) as nums from htt_app_user 
+			where registerDate>=#{currentTime} and blackList>=0 
+			GROUP BY registerIp HAVING nums>=4
+			) a)
+	</select>
+	
+	<select id="selectHttAllUserByUserPwds" resultType="com.yfax.task.htt.vo.HttAppUserVo">
+		SELECT phoneNum, userPwd, registerDate, accountStatus, blackRuleDesc FROM `htt_app_user` WHERE registerDate>=#{currentTime} and blackList>=0 
+			and userPwd in (SELECT userPwd FROM (
+			select `userPwd` , count(userPwd) as nums from htt_app_user 
+			where registerDate>=#{currentTime} and blackList>=0 and userPwd!='' 
+			GROUP BY userPwd HAVING nums>=3
+			) a)
+	</select>
+	
+	<select id="selectHttAllUserByLoginHisWifiMacs" resultType="com.yfax.task.htt.vo.HttAppUserVo">
+		<![CDATA[
+			SELECT a.phoneNum,a.accountStatus,a.registerDate,a.blackRuleDesc FROM 
+				(select phoneNum,accountStatus,registerDate,blackRuleDesc from htt_app_user where registerDate>=#{currentTime} and registerDate<#{cTime} and blackList>=0) a, 
+				(SELECT id,phoneNum,min(createDate) as createDate, location, wifiMac FROM htt_loginnew_his
+				 WHERE createDate>=#{currentTime} and createDate<#{cTime} 
+				 and location is not null and wifiMac is not null GROUP BY  phoneNum) b
+				where a.phoneNum=b.phoneNum and b.wifiMac in (
+				    SELECT wifiMac FROM (
+						SELECT wifiMac, count(wifiMac) as nums FROM (
+						SELECT a.phoneNum,b.id,b.location,b.wifiMac,b.createDate FROM 
+						(select phoneNum from htt_app_user where registerDate>=#{currentTime} and registerDate<#{cTime} and blackList>=0) a
+						, (SELECT id,phoneNum,min(createDate) as createDate, location, wifiMac FROM htt_loginnew_his
+						 WHERE createDate>=#{currentTime} and createDate<#{cTime} 
+						 and location is not null and wifiMac is not null GROUP BY phoneNum) b
+						where a.phoneNum=b.phoneNum
+						) c group by wifiMac HAVING nums>=3 ) d
+				)
+		]]>
+	</select>
+	
+	<select id="selectHttAllUserByLoginHisLocations" resultType="com.yfax.task.htt.vo.HttAppUserVo">
+		<![CDATA[
+			SELECT a.phoneNum,a.accountStatus,a.registerDate,a.blackRuleDesc FROM 
+				(select phoneNum,accountStatus,registerDate,blackRuleDesc from htt_app_user where registerDate>=#{currentTime} and registerDate<#{cTime} and blackList>=0) a, 
+				(SELECT id,phoneNum,min(createDate) as createDate, position, wifiMac FROM htt_loginnew_his WHERE createDate>=#{currentTime} and createDate<#{cTime} 
+				 and position is not null and position!='(null),(null)' and wifiMac is not null GROUP BY  phoneNum) b
+				 where a.phoneNum=b.phoneNum and b.position in (
+				    SELECT position FROM (
+					    SELECT position, count(position) as nums FROM (
+							SELECT a.phoneNum,b.id,b.position,b.wifiMac,b.createDate FROM 
+								(select phoneNum from htt_app_user where registerDate>=#{currentTime} and registerDate<#{cTime} and blackList>=0) a, 
+									(SELECT id,phoneNum,min(createDate) as createDate, position, wifiMac FROM htt_loginnew_his WHERE createDate>=#{currentTime} and createDate<#{cTime}
+								 		and position is not null and position!='(null),(null)' and wifiMac is not null GROUP BY  phoneNum) b
+									where a.phoneNum=b.phoneNum) c 
+									group by position HAVING nums>=3
+								) d
+				)
+		]]>
+	</select>
+	
+	<select id="selectHttAllUserByLoginHisInstallListMd5" resultType="com.yfax.task.htt.vo.HttAppUserVo">
+		<![CDATA[
+			SELECT a.phoneNum,a.accountStatus,a.blacklist,a.registerDate,a.blackRuleDesc FROM 
+				(select phoneNum,accountStatus,blacklist,registerDate,blackRuleDesc from htt_app_user where registerDate>=#{currentTime} and registerDate<#{cTime} and blackList>=0) a, 
+				(
+				SELECT  id,phoneNum,min(createDate) as createDate, MD5(`installedList`) as installedListMd5, installedList FROM (select a.id,a.phoneNum,a.createDate,b.installedList from htt_loginnew_his a, htt_loginnew_installed_his b 
+					where a.id=b.pid and a.createDate>=#{currentTime} and a.createDate<#{cTime}) c WHERE installedList is not null GROUP BY phoneNum) b
+					 where a.phoneNum=b.phoneNum and b.installedListMd5 in 
+					 (SELECT installedListMd5 FROM (
+						SELECT installedList,installedListMd5,count(installedListMd5) as nums FROM (
+						SELECT  id,phoneNum,min(createDate) as createDate, MD5(`installedList`) as installedListMd5, installedList FROM (select a.id,a.phoneNum,a.createDate,b.installedList from htt_loginnew_his a, htt_loginnew_installed_his b 
+						where a.id=b.pid and a.createDate>=#{currentTime} and a.createDate<#{cTime}) c WHERE installedList is not null GROUP BY phoneNum ) a 
+						GROUP BY installedListMd5 
+						HAVING nums >= 3) b
+					)
+		]]>
+	</select>
+	
+	<!-- 批量更新 -->
+	<update id="batchUpdateHttAllUser"  parameterType="java.util.List">
+          <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update 
+				htt_app_user 
+			<set>
+				<if test="item.blackList != null"> blackList = #{item.blackList}, </if>
+				<if test="item.blackRuleDesc != null"> blackRuleDesc = #{item.blackRuleDesc}, </if>
+				<if test="item.updateDate != null"> updateDate = #{item.updateDate}, </if>
+				<if test="item.accountStatus != null"> accountStatus = #{item.accountStatus}, </if>
+				<if test="item.continueCheckIn != null"> continueCheckIn = #{item.continueCheckIn}, </if>
+				<if test="item.isInviteStep != null"> isInviteStep = #{item.isInviteStep}, </if>
+				<if test="item.isDailyRead != null"> isDailyRead = #{item.isDailyRead}, </if>
+				<if test="item.isDailyVideo != null"> isDailyVideo = #{item.isDailyVideo}, </if>
+				<if test="item.updateDate != null"> updateDate = #{item.updateDate}, </if>
+			</set> 
+			 where phoneNum = #{item.phoneNum} 
+         </foreach>
+    </update>
+    
+    <!-- 测试 -->
+    <select id="selectByTestDataIds" resultType="com.yfax.task.htt.vo.HttTestVo">
+		<![CDATA[
+    			SELECT `phoneNum`  FROM `htt_app_user` WHERE `phoneNum` in (
+				select studentPhoneNum as phoneNum from (SELECT `studentPhoneNum` , COUNT(studentPhoneNum) as nums 
+				FROM htt_award_student_his where createDate>=#{startTime}  
+				and  createDate<#{endTime}  and awardType=2 GROUP BY `studentPhoneNum`  HAVING nums>1
+	    			) b
+    			) 
+		]]>
+    </select>
+    
+    <select id="selecgCountByTestData" resultType="java.lang.Long">
+		<![CDATA[
+			select COUNT(*) as count from htt_inviteuser_award where studentPhoneNum=#{phoneNum}
+		]]>
+    </select>
+    
+	<select id="selectByTestData" resultType="com.yfax.task.htt.vo.HttTestVo">
+		<![CDATA[
+			SELECT a.id as aid, a.awardName, a.gold, b.id as bid, a.phoneNum, b.time, b.descStr, b.gold, b.updateDate,b.isAward FROM (
+			SELECT * FROM htt_award_student_his where createDate>=#{startTime} 
+			and  createDate<#{endTime} and studentPhoneNum=#{phoneNum} and `awardType` =2
+			    ) a , 
+			 (select * from `htt_inviteuser_award` WHERE `studentPhoneNum` =#{phoneNum}) b 
+			where a.createDate=b.updateDate and a.createDate>=#{startTime}  
+				and a.createDate<#{endTime} order by a.createDate 
+		]]>
+    </select>
+    
+    <delete id="deleteTestDataAwardById">
+    		delete from htt_award_student_his where id=#{aid}
+    </delete>
+   
+   <update id="updateTestDataStudentAwardHis">
+   		update htt_inviteuser_award set isAward=0, updateDate=null where id=#{bid}
+   </update>
+   
+   <update id="updateTestDataUser">
+   		update htt_app_user set isMasterFinished=0 where phoneNum=#{phoneNum}
+   </update>
+   
+   <select id="selectByTestDataCheckIns" resultType="com.yfax.task.htt.vo.HttTestVo">
+		<![CDATA[
+    			SELECT phoneNum , time FROM (
+			SELECT phoneNum, COUNT(phoneNum) as nums, min(createDate) as time 
+			FROM `htt_award_checkin_his` WHERE `createDate` >= #{startTime}
+			GROUP BY `phoneNum`  HAVING nums >1) c 
+		]]>
+    </select>
+    
+    <delete id="deleteByTestDataCheckIns">
+    		delete from htt_award_checkin_his where phoneNum=#{phoneNum} and createDate>#{time}
+    </delete>
+</mapper>

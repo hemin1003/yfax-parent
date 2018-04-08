@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <package name="com.yfax.webapi.htt.vo"/>
+    </typeAliases>
+    <mappers>
+        <mapper resource="mybatis/mapper/AppUserMapper.xml"/>
+        <mapper resource="mybatis/mapper/AwardHisMapper.xml"/>
+        <!-- <mapper resource="mybatis/mapper/LoginHisMapper.xml"/> -->
+        <mapper resource="mybatis/mapper/UserSmsMapper.xml"/>
+        <mapper resource="mybatis/mapper/BalanceHisMapper.xml"/>
+        <mapper resource="mybatis/mapper/IncomeSetMapper.xml"/>
+        <mapper resource="mybatis/mapper/RateSetMapper.xml"/>
+        <mapper resource="mybatis/mapper/WithdrawHisMapper.xml"/>
+        <mapper resource="mybatis/mapper/ReadHisMapper.xml"/>
+        <mapper resource="mybatis/mapper/AppShareCodeMapper.xml"/>
+        <mapper resource="mybatis/mapper/IpShareCodeMapper.xml"/>
+        <mapper resource="mybatis/mapper/InviteUserHisMapper.xml"/>
+        <mapper resource="mybatis/mapper/UserFeedbackMapper.xml"/>
+        <mapper resource="mybatis/mapper/AppConfigMapper.xml"/>
+        <mapper resource="mybatis/mapper/StudentConfigMapper.xml"/>
+        <mapper resource="mybatis/mapper/InitConfigMapper.xml"/>
+        <mapper resource="mybatis/mapper/AppVersionMapper.xml"/>
+        
+        <mapper resource="mybatis/mapper/AdvListMapper.xml"/>
+        <mapper resource="mybatis/mapper/AdvDetailMapper.xml"/>
+        <mapper resource="mybatis/mapper/VideoHisMapper.xml"/>
+        <mapper resource="mybatis/mapper/TimeHisMapper.xml"/>
+        <mapper resource="mybatis/mapper/InviteUserAwardMapper.xml"/>
+        <mapper resource="mybatis/mapper/UserTaskMapper.xml"/>
+        
+        <mapper resource="mybatis/mapper/AppUserMultiMapper.xml"/>
+        <mapper resource="mybatis/mapper/BigUserMapper.xml"/>
+        <mapper resource="mybatis/mapper/DomainConfigMapper.xml"/>
+        <mapper resource="mybatis/mapper/TraceHisMapper.xml"/>
+        <mapper resource="mybatis/mapper/ImgCodeMapper.xml"/>
+        
+        <mapper resource="mybatis/mapper/AwardCheckinHisMapper.xml"/>
+        
+        <mapper resource="mybatis/mapper/VersionUpgradeConfigMapper.xml"/>
+        <mapper resource="mybatis/mapper/NoticeConfigMapper.xml"/>
+        <mapper resource="mybatis/mapper/BlacklistSetMapper.xml"/>
+        <mapper resource="mybatis/mapper/BlacklistHisMapper.xml"/>
+        
+        <mapper resource="mybatis/mapper/LoginHisNewMapper.xml"/>
+        <mapper resource="mybatis/mapper/LoginHisNewInstalledListMapper.xml"/>
+        <mapper resource="mybatis/mapper/HolidayActivityRankingMapper.xml"/>
+        <mapper resource="mybatis/mapper/SdkCallbackHisMapper.xml"/>
+        
+        <mapper resource="mybatis/mapper/ArticleHisMapper.xml"/>
+        <mapper resource="mybatis/mapper/ArticleHisDetailMapper.xml"/>
+        <mapper resource="mybatis/mapper/AwardStudentHisMapper.xml"/>
+    </mappers>
+</configuration>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.StudentConfigVo">
+
+    <select id="selectStudentConfig" resultType="com.yfax.webapi.htt.vo.StudentConfigVo">
+    		<![CDATA[
+		 select * from htt_student_config where #{awardCount}>=startValue and #{awardCount}<=endvalue and status=2
+        		order by updateDate desc, createDate desc limit 1
+		]]> 
+    </select>
+    
+</mapper>

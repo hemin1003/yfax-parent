@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.AppUserMultiVo">
+
+	<select id="selectAppUserMultiBySystemUserId" resultType="com.yfax.webapi.htt.vo.AppUserMultiVo">
+        select * from htt_app_usermulti where systemUserId=#{systemUserId}
+    </select>
+
+	<select id="selectAppUserMultiByWechatOpenId" resultType="com.yfax.webapi.htt.vo.AppUserMultiVo">
+        select * from htt_app_usermulti where wechatOpenId=#{wechatOpenId} order by updateDate desc, createDate desc limit 1
+    </select>
+    
+    <select id="selectAppUserMultiByPhoneNum" resultType="com.yfax.webapi.htt.vo.AppUserMultiVo">
+        select * from htt_app_usermulti where ownPhoneNum=#{phoneNum}
+    </select>
+
+	<insert id="insertMultiUser" parameterType="com.yfax.webapi.htt.vo.AppUserMultiVo">
+		insert into htt_app_usermulti
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="systemUserId != null" > systemUserId, </if>
+		  <if test="wechatOpenId != null" > wechatOpenId, </if>
+		  <if test="wechatNickname != null" > wechatNickname, </if>
+		  <if test="wechatHeadImgurl != null" > wechatHeadImgurl, </if>
+		  <if test="wechatUnionId != null" > wechatUnionId, </if>
+		  <if test="wechatPwd != null" > wechatPwd, </if>
+		  <if test="wechatName != null" > wechatName, </if>
+		  <if test="ownPhoneNum != null" > ownPhoneNum, </if>
+		  <if test="ownUserPwd != null" > ownUserPwd, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  <if test="wechatPhoneNum != null" > wechatPhoneNum, </if>
+		  <if test="telPhoneNum != null" > telPhoneNum, </if>
+		  <if test="alipayAccount != null" > alipayAccount, </if>
+		  <if test="alipayName != null" > alipayName, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="systemUserId != null" > #{systemUserId}, </if>
+		  <if test="wechatOpenId != null" > #{wechatOpenId}, </if>
+		  <if test="wechatNickname != null" > #{wechatNickname}, </if>
+		  <if test="wechatHeadImgurl != null" > #{wechatHeadImgurl}, </if>
+		  <if test="wechatUnionId != null" > #{wechatUnionId}, </if>
+		  <if test="wechatPwd != null" > #{wechatPwd}, </if>
+		  <if test="wechatName != null" > #{wechatName}, </if>
+		  <if test="ownPhoneNum != null" > #{ownPhoneNum}, </if>
+		  <if test="ownUserPwd != null" > #{ownUserPwd}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > #{updateDate}, </if>
+		  <if test="wechatPhoneNum != null" > #{wechatPhoneNum}, </if>
+		  <if test="telPhoneNum != null" > #{telPhoneNum}, </if>
+		  <if test="alipayAccount != null" > #{alipayAccount}, </if>
+		  <if test="alipayName != null" > #{alipayName}, </if>
+		  
+        </trim>
+	</insert>
+	
+	<update id="updateMultiUser" parameterType="com.yfax.webapi.htt.vo.AppUserMultiVo">
+		update htt_app_usermulti 
+		<set>
+			<if test="wechatOpenId != null"> wechatOpenId = #{wechatOpenId}, </if>
+			<if test="wechatNickname != null"> wechatNickname = #{wechatNickname}, </if>
+			<if test="wechatHeadImgurl != null"> wechatHeadImgurl = #{wechatHeadImgurl}, </if>
+			<if test="wechatUnionId != null"> wechatUnionId = #{wechatUnionId}, </if>
+			<if test="wechatPwd != null"> wechatPwd = #{wechatPwd}, </if>
+			<if test="wechatName != null"> wechatName = #{wechatName}, </if>
+			<if test="wechatPhoneNum != null"> wechatPhoneNum = #{wechatPhoneNum}, </if>
+			<if test="telPhoneNum != null"> telPhoneNum = #{telPhoneNum}, </if>
+			<if test="alipayAccount != null"> alipayAccount = #{alipayAccount}, </if>
+			<if test="alipayName != null"> alipayName = #{alipayName}, </if>
+			<if test="ownPhoneNum != null"> ownPhoneNum = #{ownPhoneNum}, </if>
+			<if test="ownUserPwd != null"> ownUserPwd = #{ownUserPwd}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+		</set>
+		where systemUserId = #{systemUserId}
+	</update>
+   
+</mapper>

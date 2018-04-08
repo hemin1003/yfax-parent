@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.webapi.htt.vo.IncomeSetVo">
+
+	 <select id="selectIncomeSet" resultType="com.yfax.webapi.htt.vo.IncomeSetVo">
+        select * from htt_income_set where goodType=#{goodType} and status=2 and saleFlag!=1 
+        		order by cast(`income` as signed integer)
+    </select>
+    
+    <select id="selectIncomeSetByTypeAndIncome" resultType="com.yfax.webapi.htt.vo.IncomeSetVo">
+        select * from htt_income_set where goodType=#{goodType} and status=2 and saleFlag!=1 and income=#{income}
+        		order by cast(`income` as signed integer) limit 1
+    </select>
+    
+</mapper>

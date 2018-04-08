@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yfax.task.htt.vo.HttWithdrawProveUserLinkVo">
+
+	<!-- 添加 -->
+	<insert id="insertHttWithdrawProveUserLink" parameterType="com.yfax.task.htt.vo.HttWithdrawProveUserLinkVo">
+		insert into htt_withdraw_prove_user_link
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null"> id, </if>
+			<if test="pid != null"> pid, </if>
+			<if test="phoneNum != null"> phoneNum, </if>
+			<if test="wechatNickname != null"> wechatNickname, </if>
+			<if test="ownPhoneNum != null"> ownPhoneNum, </if>
+			<if test="alipayAccount != null"> alipayAccount, </if>
+			<if test="imei != null"> imei, </if>
+			<if test="registerDate != null"> registerDate, </if>
+			<if test="accountStatus != null"> accountStatus, </if>
+			<if test="students != null"> students, </if>
+			<if test="masterPhoneNum != null"> masterPhoneNum, </if>
+			<if test="isCheatedApp != null"> isCheatedApp, </if>
+			<if test="deviceName != null"> deviceName, </if>
+			<if test="registerIp != null"> registerIp, </if>
+			<if test="ip != null"> ip, </if>
+			<if test="coordinate != null"> coordinate, </if>
+			<if test="location != null"> location, </if>
+			<if test="wifi != null"> wifi, </if>
+			<if test="installedList != null"> installedList, </if>
+			<if test="createDate != null"> createDate, </if>
+			<if test="updateDate != null"> updateDate, </if>
+			<if test="project != null"> project, </if>
+			<if test="dataFlag != null"> dataFlag, </if>
+
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null"> #{id}, </if>
+			<if test="pid != null"> #{pid}, </if>
+			<if test="phoneNum != null"> #{phoneNum}, </if>
+			<if test="wechatNickname != null"> #{wechatNickname}, </if>
+			<if test="ownPhoneNum != null"> #{ownPhoneNum}, </if>
+			<if test="alipayAccount != null"> #{alipayAccount}, </if>
+			<if test="imei != null"> #{imei}, </if>
+			<if test="registerDate != null"> #{registerDate}, </if>
+			<if test="accountStatus != null"> #{accountStatus}, </if>
+			<if test="students != null"> #{students}, </if>
+			<if test="masterPhoneNum != null"> #{masterPhoneNum}, </if>
+			<if test="isCheatedApp != null"> #{isCheatedApp}, </if>
+			<if test="deviceName != null"> #{deviceName}, </if>
+			<if test="registerIp != null"> #{registerIp}, </if>
+			<if test="ip != null"> #{ip}, </if>
+			<if test="coordinate != null"> #{coordinate}, </if>
+			<if test="location != null"> #{location}, </if>
+			<if test="wifi != null"> #{wifi}, </if>
+			<if test="installedList != null"> #{installedList}, </if>
+			<if test="createDate != null"> #{createDate}, </if>
+			<if test="updateDate != null"> null, </if>
+			<if test="project != null"> #{project}, </if>
+			<if test="dataFlag != null"> #{dataFlag}, </if>
+
+		</trim>
+	</insert>
+
+	<!-- 批量插入 -->
+	<insert id="batchInsertHttWithdrawProveUserLink" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open=""
+			close="" separator=";">
+			insert into htt_withdraw_prove_user_link
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="item.id != null"> id, </if>
+				<if test="item.pid != null"> pid, </if>
+				<if test="item.phoneNum != null"> phoneNum, </if>
+				<if test="item.wechatNickname != null"> wechatNickname, </if>
+				<if test="item.ownPhoneNum != null"> ownPhoneNum, </if>
+				<if test="item.alipayAccount != null"> alipayAccount, </if>
+				<if test="item.imei != null"> imei, </if>
+				<if test="item.registerDate != null"> registerDate, </if>
+				<if test="item.accountStatus != null"> accountStatus, </if>
+				<if test="item.students != null"> students, </if>
+				<if test="item.masterPhoneNum != null"> masterPhoneNum, </if>
+				<if test="item.isCheatedApp != null"> isCheatedApp, </if>
+				<if test="item.deviceName != null"> deviceName, </if>
+				<if test="item.registerIp != null"> registerIp, </if>
+				<if test="item.ip != null"> ip, </if>
+				<if test="item.coordinate != null"> coordinate, </if>
+				<if test="item.location != null"> location, </if>
+				<if test="item.wifi != null"> wifi, </if>
+				<if test="item.installedList != null"> installedList, </if>
+				<if test="item.createDate != null"> createDate, </if>
+				<if test="item.updateDate != null"> updateDate, </if>
+				<if test="item.project != null"> project, </if>
+				<if test="item.dataFlag != null"> dataFlag, </if>
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides=",">
+				<if test="item.id != null"> #{item.id}, </if>
+				<if test="item.pid != null"> #{item.pid}, </if>
+				<if test="item.phoneNum != null"> #{item.phoneNum}, </if>
+				<if test="item.wechatNickname != null"> #{item.wechatNickname},</if>
+				<if test="item.ownPhoneNum != null"> #{item.ownPhoneNum}, </if>
+				<if test="item.alipayAccount != null"> #{item.alipayAccount},</if>
+				<if test="item.imei != null"> #{item.imei}, </if>
+				<if test="item.registerDate != null"> #{item.registerDate}, </if>
+				<if test="item.accountStatus != null"> #{item.accountStatus},</if>
+				<if test="item.students != null"> #{item.students}, </if>
+				<if test="item.masterPhoneNum != null"> #{item.masterPhoneNum},</if>
+				<if test="item.isCheatedApp != null"> #{item.isCheatedApp}, </if>
+				<if test="item.deviceName != null"> #{item.deviceName}, </if>
+				<if test="item.registerIp != null"> #{item.registerIp}, </if>
+				<if test="item.ip != null"> #{item.ip}, </if>
+				<if test="item.coordinate != null"> #{item.coordinate}, </if>
+				<if test="item.location != null"> #{item.location}, </if>
+				<if test="item.wifi != null"> #{item.wifi}, </if>
+				<if test="item.installedList != null"> #{item.installedList},</if>
+				<if test="item.createDate != null"> #{item.createDate}, </if>
+				<if test="item.updateDate != null"> null, </if>
+				<if test="item.project != null"> #{item.project}, </if>
+				<if test="item.dataFlag != null"> #{item.dataFlag}, </if>
+			</trim>
+		</foreach>
+	</insert>
+	
+	<delete id="deleteByPid" parameterType="java.lang.String">
+		delete from htt_withdraw_prove_user_link where pid = #{pid}
+	</delete>
+	
+</mapper>
