@@ -17,8 +17,8 @@
 * 通用组件服务 yfax-common
 * 客户端api系统 yfax-htt-api
 * 任务系统（集成微信企业支付、支付宝企业支付） yfax-task
-* 主爬虫系统 yfax-spider
-* 爬虫监控系统 yfax-spider-monitor
+* 主爬虫任务系统 yfax-spider（仅限今日头条）[点击前往：爬虫web系统源码](https://github.com/hemin1003/java-spider)
+* 爬虫监控任务系统 yfax-spider-monitor（仅限今日头条）
 * 工具类 yfax-utils
 
 ### yfax-common 
