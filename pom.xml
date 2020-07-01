@@ -80,7 +80,7 @@
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
 				<scope>runtime</scope>
-				<version>5.1.41</version>
+				<version>8.0.16</version>
 			</dependency>
 			<!-- 数据库操作API集成 自带的tomcat数据连接池 <dependency> <groupId>org.springframework.boot</groupId> 
 				<artifactId>spring-boot-starter-data-jpa</artifactId> </dependency> -->
