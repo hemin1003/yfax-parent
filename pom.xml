@@ -165,7 +165,7 @@
 			<dependency>
 				<groupId>org.elasticsearch</groupId>
 				<artifactId>elasticsearch</artifactId>
-				<version>5.1.2</version>
+				<version>6.8.15</version>
 			</dependency>
 			<dependency>
 				<groupId>com.jayway.jsonpath</groupId>
