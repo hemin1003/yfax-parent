@@ -10,7 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.yfax.utils.DateUtil;
 import com.yfax.utils.StrUtil;
@@ -19,7 +19,7 @@ import com.yfax.webapi.htt.dao.AppUserMultiDao;
 import com.yfax.webapi.htt.vo.AppUserMultiVo;
 import com.yfax.webapi.htt.vo.AppUserVo;
 
-@Component("userDetailsService")
+@Service
 public class CfdbUserDetailsService implements UserDetailsService {
 
 	protected static Logger logger = LoggerFactory.getLogger(CfdbUserDetailsService.class);
